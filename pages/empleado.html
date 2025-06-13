@@ -2,29 +2,37 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mis Tareas</title>
+    <title>Mis Tareas - Empleado</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="empleado-container">
+
         <a href="../index.html" class="btn volver-btn">Volver al Inicio</a>
         <h1>Mis Tareas</h1>
 
-        <select id="employee-selector">
-            <option value="">Seleccionar..</option>
+        <!-- Selector de empleado -->
+        <div class="selector-container">
+            <label for="employee-selector"><strong>Seleccionar empleado:</strong></label>
+            <select id="employee-selector">
+                <option value="">Seleccionar...</option>
                 <option value="Matias">Matías</option>
                 <option value="Facundo">Facundo</option>
                 <option value="Ariel">Ariel</option>
                 <option value="Guillermo">Guillermo</option>
-        </select>
+            </select>
+        </div>
 
-    <div id="employee-dashboard" class="dashboard">
-        <p>Total de tareas: <span id="emp-total-tasks">0</span></p>
-        <p>Pendientes: <span id="emp-pending-tasks">0</span></p>
-        <p>Vencidas: <span id="emp-overdue-tasks">0</span></p>
-    </div>
+        <!-- Dashboard -->
+        <div id="employee-dashboard" class="dashboard">
+            <p>Total de tareas: <span id="emp-total-tasks">0</span></p>
+            <p>Pendientes: <span id="emp-pending-tasks">0</span></p>
+            <p>Vencidas: <span id="emp-overdue-tasks">0</span></p>
+        </div>
 
-        <ul id="employee-task-list"></ul>
+        <!-- Lista de tareas -->
+        <ul id="employee-task-list" class="task-list"></ul>
+
     </div>
 
     <script src="../js/empleado.js"></script>
