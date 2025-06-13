@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (myTasks.length === 0) {
             employeeTaskList.innerHTML = '<p>No hay tareas asignadas</p>';
+            renderEmployeeDashboard(myTasks);
             return;
         }
 
@@ -32,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 li.classList.add('completed');
             }
 
-            // Resaltado visual de vencimiento
             if (task.dueDate) {
                 const dueDateObj = new Date(task.dueDate);
                 const diffInDays = (dueDateObj - today) / (1000 * 60 * 60 * 24);
@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>${task.desc}</p>
                 <p><strong>Prioridad:</strong> ${task.priority}</p>
                 <p><strong>Vence:</strong> ${task.dueDate || 'Sin fecha'}</p>
+                <p><strong>Creada:</strong> ${formatDate(task.createdAt)}</p>
                 <button class="complete-btn">${task.completed ? 'Desmarcar' : 'Completar'}</button>
             `;
 
@@ -60,6 +61,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
             employeeTaskList.appendChild(li);
         });
+
+        renderEmployeeDashboard(myTasks);
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return 'Sin fecha';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('es-AR', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+
+    function renderEmployeeDashboard(myTasks) {
+        const total = myTasks.length;
+        const pending = myTasks.filter(task => !task.completed).length;
+
+        const today = new Date();
+        const overdue = myTasks.filter(task => {
+            if (!task.dueDate) return false;
+            const dueDateObj = new Date(task.dueDate);
+            return dueDateObj < today && !task.completed;
+        }).length;
+
+        document.getElementById('emp-total-tasks').textContent = total;
+        document.getElementById('emp-pending-tasks').textContent = pending;
+        document.getElementById('emp-overdue-tasks').textContent = overdue;
     }
 
     function saveTasks() {

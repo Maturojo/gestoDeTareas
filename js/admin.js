@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             owner,
             priority,
             dueDate,
+            createdAt: new Date().toISOString(),
             completed: false
         };
 
@@ -74,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 li.classList.add('completed');
             }
 
-            // Verificar fechas de vencimiento
             if (task.dueDate) {
                 const dueDateObj = new Date(task.dueDate);
                 const diffInDays = (dueDateObj - today) / (1000 * 60 * 60 * 24);
@@ -92,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p><strong>Asignado a:</strong> ${task.owner || 'No asignado'}</p>
                 <p><strong>Prioridad:</strong> ${task.priority}</p>
                 <p><strong>Vence:</strong> ${task.dueDate || 'Sin fecha'}</p>
+                <p><strong>Creada:</strong> ${formatDate(task.createdAt)}</p>
                 <button class="complete-btn">${task.completed ? 'Desmarcar' : 'Completar'}</button>
                 <button class="delete-btn">Eliminar</button>
             `;
@@ -112,6 +113,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         renderCounters();
+        renderDashboard();
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return 'Sin fecha';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('es-AR', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
     }
 
     function renderCounters() {
@@ -131,6 +144,22 @@ document.addEventListener('DOMContentLoaded', () => {
             p.textContent = `${owner}: ${counts[owner]} tareas pendientes`;
             assignedCounters.appendChild(p);
         }
+    }
+
+    function renderDashboard() {
+        const total = tasks.length;
+        const pending = tasks.filter(task => !task.completed).length;
+
+        const today = new Date();
+        const overdue = tasks.filter(task => {
+            if (!task.dueDate) return false;
+            const dueDateObj = new Date(task.dueDate);
+            return dueDateObj < today && !task.completed;
+        }).length;
+
+        document.getElementById('total-tasks').textContent = total;
+        document.getElementById('pending-tasks').textContent = pending;
+        document.getElementById('overdue-tasks').textContent = overdue;
     }
 
     function saveTasks() {
