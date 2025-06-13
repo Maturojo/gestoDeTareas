@@ -5,14 +5,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskOwner = document.getElementById('task-owner');
     const taskPriority = document.getElementById('task-priority');
     const taskDueDate = document.getElementById('task-due-date');
-    const taskList = document.getElementById('task-list');
-    const filterButtons = document.querySelectorAll('#filters button');
-    const assignedCounters = document.getElementById('assigned-counters');
+    const employeesContainer = document.getElementById('employees-container');
 
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    let currentFilter = 'all';
+    let openEmployees = [];
 
-    renderTasks();
+    const employees = ["Matias", "Facundo", "Ariel", "Guillermo"];
+
+    renderDashboard();
+    renderEmployees();
 
     taskForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -41,79 +42,123 @@ document.addEventListener('DOMContentLoaded', () => {
 
         tasks.push(newTask);
         saveTasks();
-        renderTasks();
+        renderDashboard();
+        renderEmployees();
         taskForm.reset();
     });
 
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            currentFilter = button.dataset.filter;
-            renderTasks();
-        });
-    });
+    function normalizeString(str) {
+        return str?.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
+    }
 
-    function renderTasks() {
-        taskList.innerHTML = '';
+    function renderEmployees() {
+        // Guardamos los empleados que están abiertos antes de renderizar
+        openEmployees = Array.from(document.querySelectorAll('.employee-name.open')).map(header => header.textContent);
 
-        let filteredTasks = tasks;
+        employeesContainer.innerHTML = '';
 
-        if (currentFilter === 'pending') {
-            filteredTasks = tasks.filter(task => !task.completed);
-        } else if (currentFilter === 'completed') {
-            filteredTasks = tasks.filter(task => task.completed);
-        }
+        employees.forEach(employee => {
+            const employeeDiv = document.createElement('div');
+            employeeDiv.classList.add('employee-section');
 
-        filteredTasks.sort((a, b) => a.priority - b.priority);
+            const header = document.createElement('h2');
+            header.textContent = employee;
+            header.classList.add('employee-name');
+            header.style.cursor = 'pointer';
 
-        const today = new Date();
+            const taskList = document.createElement('ul');
+            taskList.classList.add('task-list');
 
-        filteredTasks.forEach(task => {
-            const li = document.createElement('li');
+            const myTasks = tasks.filter(task => 
+                normalizeString(task.owner) === normalizeString(employee)
+            );
 
-            li.classList.add(`priority-${task.priority}`);
-            if (task.completed) {
-                li.classList.add('completed');
-            }
+            myTasks.sort((a, b) => a.priority - b.priority);
 
-            if (task.dueDate) {
-                const dueDateObj = new Date(task.dueDate);
-                const diffInDays = (dueDateObj - today) / (1000 * 60 * 60 * 24);
+            myTasks.forEach(task => {
+                const li = document.createElement('li');
+                li.classList.add(`priority-${task.priority}`);
 
-                if (dueDateObj < today && !task.completed) {
-                    li.classList.add('vencida');
-                } else if (diffInDays <= 2 && diffInDays >= 0 && !task.completed) {
-                    li.classList.add('proxima');
+                const today = new Date();
+                if (task.dueDate) {
+                    const dueDateObj = new Date(task.dueDate);
+                    const diffInDays = (dueDateObj - today) / (1000 * 60 * 60 * 24);
+
+                    if (dueDateObj < today) {
+                        li.classList.add('vencida');
+                    } else if (diffInDays <= 2 && diffInDays >= 0) {
+                        li.classList.add('proxima');
+                    }
                 }
+
+                if (task.completed) {
+                    li.classList.add('completed');
+                }
+
+                li.innerHTML = `
+                    <h3>${task.title}</h3>
+                    <p>${task.desc}</p>
+                    <p><strong>Prioridad:</strong> ${task.priority}</p>
+                    <p><strong>Vence:</strong> ${task.dueDate || 'Sin fecha'}</p>
+                    <p><strong>Creada:</strong> ${formatDate(task.createdAt)}</p>
+                    <button class="complete-btn">${task.completed ? 'Desmarcar' : 'Completar'}</button>
+                    <button class="delete-btn">Eliminar</button>
+                `;
+
+                li.querySelector('.complete-btn').addEventListener('click', () => {
+                    task.completed = !task.completed;
+                    saveTasks();
+                    renderDashboard();
+                    renderEmployees();
+                });
+
+                li.querySelector('.delete-btn').addEventListener('click', () => {
+                    tasks = tasks.filter(t => t.id !== task.id);
+                    saveTasks();
+                    renderDashboard();
+                    renderEmployees();
+                });
+
+                taskList.appendChild(li);
+            });
+
+            if (myTasks.length > 0) {
+                header.addEventListener('click', () => {
+                    const isOpen = taskList.classList.toggle('open');
+                    header.classList.toggle('open', isOpen);
+                });
+            } else {
+                const emptyMsg = document.createElement('p');
+                emptyMsg.textContent = "No hay tareas";
+                emptyMsg.style.padding = "15px";
+                taskList.appendChild(emptyMsg);
             }
 
-            li.innerHTML = `
-                <h3>${task.title}</h3>
-                <p>${task.desc}</p>
-                <p><strong>Asignado a:</strong> ${task.owner || 'No asignado'}</p>
-                <p><strong>Prioridad:</strong> ${task.priority}</p>
-                <p><strong>Vence:</strong> ${task.dueDate || 'Sin fecha'}</p>
-                <p><strong>Creada:</strong> ${formatDate(task.createdAt)}</p>
-                <button class="complete-btn">${task.completed ? 'Desmarcar' : 'Completar'}</button>
-                <button class="delete-btn">Eliminar</button>
-            `;
+            // Si estaba abierto antes, lo abrimos de nuevo
+            if (openEmployees.includes(employee)) {
+                header.classList.add('open');
+                taskList.classList.add('open');
+            }
 
-            li.querySelector('.complete-btn').addEventListener('click', () => {
-                task.completed = !task.completed;
-                saveTasks();
-                renderTasks();
-            });
-
-            li.querySelector('.delete-btn').addEventListener('click', () => {
-                tasks = tasks.filter(t => t.id !== task.id);
-                saveTasks();
-                renderTasks();
-            });
-
-            taskList.appendChild(li);
+            employeeDiv.appendChild(header);
+            employeeDiv.appendChild(taskList);
+            employeesContainer.appendChild(employeeDiv);
         });
+    }
 
-        renderCounters();
-        renderDashboard();
+    function renderDashboard() {
+        const total = tasks.length;
+        const pending = tasks.filter(task => !task.completed).length;
+        const today = new Date();
+        const overdue = tasks.filter(task => {
+            if (!task.dueDate) return false;
+            const dueDateObj = new Date(task.dueDate);
+            return dueDateObj < today && !task.completed;
+        }).length;
+
+        document.getElementById('total-tasks').textContent = total;
+        document.getElementById('pending-tasks').textContent = pending;
+        document.getElementById('overdue-tasks').textContent = overdue;
     }
 
     function formatDate(dateString) {
@@ -125,41 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
             month: 'long',
             day: 'numeric'
         });
-    }
-
-    function renderCounters() {
-        assignedCounters.innerHTML = '';
-
-        const counts = {};
-
-        tasks.forEach(task => {
-            if (!task.completed) {
-                const owner = task.owner || 'No asignado';
-                counts[owner] = (counts[owner] || 0) + 1;
-            }
-        });
-
-        for (const owner in counts) {
-            const p = document.createElement('p');
-            p.textContent = `${owner}: ${counts[owner]} tareas pendientes`;
-            assignedCounters.appendChild(p);
-        }
-    }
-
-    function renderDashboard() {
-        const total = tasks.length;
-        const pending = tasks.filter(task => !task.completed).length;
-
-        const today = new Date();
-        const overdue = tasks.filter(task => {
-            if (!task.dueDate) return false;
-            const dueDateObj = new Date(task.dueDate);
-            return dueDateObj < today && !task.completed;
-        }).length;
-
-        document.getElementById('total-tasks').textContent = total;
-        document.getElementById('pending-tasks').textContent = pending;
-        document.getElementById('overdue-tasks').textContent = overdue;
     }
 
     function saveTasks() {

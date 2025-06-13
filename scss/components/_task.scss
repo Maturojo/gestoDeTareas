@@ -180,3 +180,62 @@
         background: #218838;
     }
     }
+
+    .employee-section {
+    margin-bottom: 30px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    background: #fff;
+    }
+
+    .employee-name {
+    font-size: 1.4rem;
+    padding: 20px;
+    margin: 0;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+
+    &::after {
+        content: "▶";
+        position: absolute;
+        right: 20px;
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+    }
+
+    &.open::after {
+        transform: rotate(90deg);
+    }
+    }
+
+    .task-list {
+    list-style: none;
+    padding: 20px;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    }
+
+    .task-list.open {
+    opacity: 1;
+    max-height: 2000px; /* suficientemente grande para acomodar tareas */
+    }
+
+    .empleado-task-list {
+    opacity: 1 !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+

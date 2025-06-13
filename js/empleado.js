@@ -8,18 +8,21 @@ document.addEventListener('DOMContentLoaded', () => {
         renderEmployeeTasks(employeeSelector.value);
     });
 
+    function normalizeString(str) {
+        return str?.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
+    }
+
     function renderEmployeeTasks(employee) {
         employeeTaskList.innerHTML = '';
 
         const myTasks = tasks.filter(task => 
-            task.owner?.trim().toLowerCase() === employee.trim().toLowerCase()
+            normalizeString(task.owner) === normalizeString(employee)
         );
 
         myTasks.sort((a, b) => a.priority - b.priority);
 
         if (myTasks.length === 0) {
             employeeTaskList.innerHTML = '<p>No hay tareas asignadas</p>';
-            renderEmployeeDashboard(myTasks);
             return;
         }
 
@@ -27,21 +30,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         myTasks.forEach(task => {
             const li = document.createElement('li');
-
             li.classList.add(`priority-${task.priority}`);
-            if (task.completed) {
-                li.classList.add('completed');
-            }
 
             if (task.dueDate) {
                 const dueDateObj = new Date(task.dueDate);
                 const diffInDays = (dueDateObj - today) / (1000 * 60 * 60 * 24);
 
-                if (dueDateObj < today && !task.completed) {
+                if (dueDateObj < today) {
                     li.classList.add('vencida');
-                } else if (diffInDays <= 2 && diffInDays >= 0 && !task.completed) {
+                } else if (diffInDays <= 2 && diffInDays >= 0) {
                     li.classList.add('proxima');
                 }
+            }
+
+            if (task.completed) {
+                li.classList.add('completed');
             }
 
             li.innerHTML = `
@@ -61,8 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             employeeTaskList.appendChild(li);
         });
-
-        renderEmployeeDashboard(myTasks);
     }
 
     function formatDate(dateString) {
@@ -74,22 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
             month: 'long',
             day: 'numeric'
         });
-    }
-
-    function renderEmployeeDashboard(myTasks) {
-        const total = myTasks.length;
-        const pending = myTasks.filter(task => !task.completed).length;
-
-        const today = new Date();
-        const overdue = myTasks.filter(task => {
-            if (!task.dueDate) return false;
-            const dueDateObj = new Date(task.dueDate);
-            return dueDateObj < today && !task.completed;
-        }).length;
-
-        document.getElementById('emp-total-tasks').textContent = total;
-        document.getElementById('emp-pending-tasks').textContent = pending;
-        document.getElementById('emp-overdue-tasks').textContent = overdue;
     }
 
     function saveTasks() {

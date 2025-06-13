@@ -2,15 +2,22 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Gestor de Tareas - Admin</title>
+    <title>Gestor de Tareas - Administración</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div class="container">
-
+    <div class="empleado-container">
         <a href="../index.html" class="btn volver-btn">Volver al Inicio</a>
         <h1>Gestor de Tareas - Administración</h1>
 
+        <!-- DASHBOARD GENERAL -->
+        <div id="dashboard" class="dashboard">
+            <p>Total de tareas: <span id="total-tasks">0</span></p>
+            <p>Pendientes: <span id="pending-tasks">0</span></p>
+            <p>Vencidas: <span id="overdue-tasks">0</span></p>
+        </div>
+
+        <!-- FORMULARIO PARA CREAR TAREA -->
         <form id="task-form">
             <input type="text" id="task-title" placeholder="Título de la tarea" required>
             <textarea id="task-desc" placeholder="Descripción de la tarea"></textarea>
@@ -37,21 +44,9 @@
             <button type="submit">Agregar tarea</button>
         </form>
 
-        <div id="filters">
-            <button data-filter="all">Todas</button>
-            <button data-filter="pending">Pendientes</button>
-            <button data-filter="completed">Completadas</button>
-        </div>
+        <!-- SECCIÓN DE EMPLEADOS -->
+        <div id="employees-container"></div>
 
-        <div id="assigned-counters"></div>
-        
-        <div id="dashboard" class="dashboard">
-        <p>Total de tareas: <span id="total-tasks">0</span></p>
-        <p>Pendientes: <span id="pending-tasks">0</span></p>
-        <p>Vencidas: <span id="overdue-tasks">0</span></p>
-        </div>
-
-        <ul id="task-list"></ul>
     </div>
 
     <script src="../js/admin.js"></script>
