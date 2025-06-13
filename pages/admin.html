@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestor de Tareas - Admin</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gestor de Tareas - Administración</h1>
+
+        <form id="task-form">
+            <input type="text" id="task-title" placeholder="Título de la tarea" required>
+            <textarea id="task-desc" placeholder="Descripción de la tarea"></textarea>
+
+            <select id="task-owner">
+                <option value="">Asignar a...</option>
+                <option value="Matías">Matías</option>
+                <option value="Juan">Juan</option>
+                <option value="Sofía">Sofía</option>
+                <option value="Laura">Laura</option>
+            </select>
+
+            <select id="task-priority">
+                <option value="6">6</option>
+                <option value="5">5</option>
+                <option value="4">4</option>
+                <option value="3">3</option>
+                <option value="2">2</option>
+                <option value="1">1</option>
+            </select>
+
+            <button type="submit">Agregar tarea</button>
+        </form>
+
+        <div id="filters">
+            <button data-filter="all">Todas</button>
+            <button data-filter="pending">Pendientes</button>
+            <button data-filter="completed">Completadas</button>
+        </div>
+
+        <div id="assigned-counters"></div>
+        <ul id="task-list"></ul>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -7,32 +7,13 @@
 </head>
 <body>
     <div class="container">
-        <h1>Gestor de Tareas</h1>
+        <h1>Bienvenido al Gestor de Tareas</h1>
+        <p>Seleccione cómo desea ingresar:</p>
 
-        <form id="task-form">
-            <input type="text" id="task-title" placeholder="Título de la tarea" required>
-            <textarea id="task-desc" placeholder="Descripción de la tarea"></textarea>
-
-            <select id="task-priority">
-            <option value="baja">Baja</option>
-            <option value="media">Media</option>
-            <option value="alta">Alta</option>
-            </select>
-
-            <button type="submit">Agregar tarea</button>
-
-
-        </form>
-
-        <div id="filters">
-            <button data-filter="all">Todas</button>
-            <button data-filter="pending">Pendientes</button>
-            <button data-filter="completed">Completadas</button>
+        <div class="menu-buttons">
+            <a href="./pages/admin.html" class="btn admin-btn">Administrador</a>
+            <a href="./pages/empleado.html" class="btn empleado-btn">Empleado</a>
         </div>
-
-        <ul id="task-list"></ul>
     </div>
-
-    <script src="js/app.js"></script>
 </body>
 </html>

@@ -4,6 +4,30 @@
   box-sizing: border-box;
 }
 
+.priority-1 {
+  border-left: 5px solid red;
+}
+
+.priority-2 {
+  border-left: 5px solid orange;
+}
+
+.priority-3 {
+  border-left: 5px solid yellow;
+}
+
+.priority-4 {
+  border-left: 5px solid greenyellow;
+}
+
+.priority-5 {
+  border-left: 5px solid green;
+}
+
+.priority-6 {
+  border-left: 5px solid gray;
+}
+
 .container {
   max-width: 600px;
   margin: 50px auto;
