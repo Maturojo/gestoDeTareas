@@ -7,18 +7,22 @@
 </head>
 <body>
     <div class="container">
+
+        <a href="../index.html" class="btn volver-btn">Volver al Inicio</a>
         <h1>Gestor de Tareas - Administración</h1>
 
         <form id="task-form">
             <input type="text" id="task-title" placeholder="Título de la tarea" required>
             <textarea id="task-desc" placeholder="Descripción de la tarea"></textarea>
 
+            <input type="date" id="task-due-date" placeholder="Fecha de vencimiento">
+
             <select id="task-owner">
                 <option value="">Asignar a...</option>
-                <option value="Matías">Matías</option>
-                <option value="Juan">Juan</option>
-                <option value="Sofía">Sofía</option>
-                <option value="Laura">Laura</option>
+                <option value="Matias">Matías</option>
+                <option value="Facundo">Facundo</option>
+                <option value="Ariel">Ariel</option>
+                <option value="Guillermo">Guillermo</option>
             </select>
 
             <select id="task-priority">
@@ -43,6 +47,6 @@
         <ul id="task-list"></ul>
     </div>
 
-    <script src="js/admin.js"></script>
+    <script src="../js/admin.js"></script>
 </body>
 </html>

@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskDesc = document.getElementById('task-desc');
     const taskOwner = document.getElementById('task-owner');
     const taskPriority = document.getElementById('task-priority');
+    const taskDueDate = document.getElementById('task-due-date');
     const taskList = document.getElementById('task-list');
     const filterButtons = document.querySelectorAll('#filters button');
     const assignedCounters = document.getElementById('assigned-counters');
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const desc = taskDesc.value.trim();
         const owner = taskOwner.value;
         const priority = parseInt(taskPriority.value);
+        const dueDate = taskDueDate.value;
 
         if (title === '') {
             alert('Por favor ingresa un título');
@@ -32,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             desc,
             owner,
             priority,
+            dueDate,
             completed: false
         };
 
@@ -61,6 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         filteredTasks.sort((a, b) => a.priority - b.priority);
 
+        const today = new Date();
+
         filteredTasks.forEach(task => {
             const li = document.createElement('li');
 
@@ -69,11 +74,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 li.classList.add('completed');
             }
 
+            // Verificar fechas de vencimiento
+            if (task.dueDate) {
+                const dueDateObj = new Date(task.dueDate);
+                const diffInDays = (dueDateObj - today) / (1000 * 60 * 60 * 24);
+
+                if (dueDateObj < today && !task.completed) {
+                    li.classList.add('vencida');
+                } else if (diffInDays <= 2 && diffInDays >= 0 && !task.completed) {
+                    li.classList.add('proxima');
+                }
+            }
+
             li.innerHTML = `
                 <h3>${task.title}</h3>
                 <p>${task.desc}</p>
                 <p><strong>Asignado a:</strong> ${task.owner || 'No asignado'}</p>
                 <p><strong>Prioridad:</strong> ${task.priority}</p>
+                <p><strong>Vence:</strong> ${task.dueDate || 'Sin fecha'}</p>
                 <button class="complete-btn">${task.completed ? 'Desmarcar' : 'Completar'}</button>
                 <button class="delete-btn">Eliminar</button>
             `;

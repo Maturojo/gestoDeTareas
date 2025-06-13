@@ -11,9 +11,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderEmployeeTasks(employee) {
         employeeTaskList.innerHTML = '';
 
-        const myTasks = tasks.filter(task => task.owner === employee);
+        const myTasks = tasks.filter(task => 
+            task.owner?.trim().toLowerCase() === employee.trim().toLowerCase()
+        );
 
         myTasks.sort((a, b) => a.priority - b.priority);
+
+        if (myTasks.length === 0) {
+            employeeTaskList.innerHTML = '<p>No hay tareas asignadas</p>';
+            return;
+        }
+
+        const today = new Date();
 
         myTasks.forEach(task => {
             const li = document.createElement('li');
@@ -23,10 +32,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 li.classList.add('completed');
             }
 
+            // Resaltado visual de vencimiento
+            if (task.dueDate) {
+                const dueDateObj = new Date(task.dueDate);
+                const diffInDays = (dueDateObj - today) / (1000 * 60 * 60 * 24);
+
+                if (dueDateObj < today && !task.completed) {
+                    li.classList.add('vencida');
+                } else if (diffInDays <= 2 && diffInDays >= 0 && !task.completed) {
+                    li.classList.add('proxima');
+                }
+            }
+
             li.innerHTML = `
                 <h3>${task.title}</h3>
                 <p>${task.desc}</p>
                 <p><strong>Prioridad:</strong> ${task.priority}</p>
+                <p><strong>Vence:</strong> ${task.dueDate || 'Sin fecha'}</p>
                 <button class="complete-btn">${task.completed ? 'Desmarcar' : 'Completar'}</button>
             `;
 
