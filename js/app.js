@@ -2,10 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskForm = document.getElementById('task-form');
     const taskTitle = document.getElementById('task-title');
     const taskDesc = document.getElementById('task-desc');
+    const taskPriority = document.getElementById('task-priority');
     const taskList = document.getElementById('task-list');
+    const filterButtons = document.querySelectorAll('#filters button');
 
-    // Cargar tareas desde localStorage al iniciar
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    let currentFilter = 'all';
 
     renderTasks();
 
@@ -14,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const title = taskTitle.value.trim();
         const desc = taskDesc.value.trim();
+        const priority = taskPriority.value;
 
         if (title === '') {
             alert('Por favor ingresa un título');
@@ -24,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             id: Date.now(),
             title,
             desc,
+            priority,
             completed: false
         };
 
@@ -33,16 +37,32 @@ document.addEventListener('DOMContentLoaded', () => {
         taskForm.reset();
     });
 
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            currentFilter = button.dataset.filter;
+            renderTasks();
+        });
+    });
+
     function renderTasks() {
         taskList.innerHTML = '';
 
-        tasks.forEach(task => {
+        let filteredTasks = tasks;
+
+        if (currentFilter === 'pending') {
+            filteredTasks = tasks.filter(task => !task.completed);
+        } else if (currentFilter === 'completed') {
+            filteredTasks = tasks.filter(task => task.completed);
+        }
+
+        filteredTasks.forEach(task => {
             const li = document.createElement('li');
-            li.className = task.completed ? 'completed' : '';
+            li.className = `${task.completed ? 'completed' : ''} ${task.priority}`;
 
             li.innerHTML = `
                 <h3>${task.title}</h3>
                 <p>${task.desc}</p>
+                <p><strong>Prioridad:</strong> ${task.priority}</p>
                 <button class="complete-btn">${task.completed ? 'Desmarcar' : 'Completar'}</button>
                 <button class="delete-btn">Eliminar</button>
             `;
