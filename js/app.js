@@ -1,14 +1,14 @@
-// Esperamos que el DOM cargue completamente
 document.addEventListener('DOMContentLoaded', () => {
     const taskForm = document.getElementById('task-form');
     const taskTitle = document.getElementById('task-title');
     const taskDesc = document.getElementById('task-desc');
     const taskList = document.getElementById('task-list');
 
-    // Creamos un array para almacenar las tareas
-    let tasks = [];
+    // Cargar tareas desde localStorage al iniciar
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-    // Manejar el submit del formulario
+    renderTasks();
+
     taskForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -21,18 +21,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const newTask = {
-            id: Date.now(), // ID único
+            id: Date.now(),
             title,
             desc,
             completed: false
         };
 
         tasks.push(newTask);
+        saveTasks();
         renderTasks();
         taskForm.reset();
     });
 
-    // Función para mostrar las tareas
     function renderTasks() {
         taskList.innerHTML = '';
 
@@ -47,19 +47,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="delete-btn">Eliminar</button>
             `;
 
-            // Marcar como completada o no
             li.querySelector('.complete-btn').addEventListener('click', () => {
                 task.completed = !task.completed;
+                saveTasks();
                 renderTasks();
             });
 
-            // Eliminar tarea
             li.querySelector('.delete-btn').addEventListener('click', () => {
                 tasks = tasks.filter(t => t.id !== task.id);
+                saveTasks();
                 renderTasks();
             });
 
             taskList.appendChild(li);
         });
+    }
+
+    function saveTasks() {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 });
