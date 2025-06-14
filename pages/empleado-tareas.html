@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tareas del empleado</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="empleado-container">
+        <a href="../pages/empleado.html" class="btn volver-btn">Volver al listado de empleados</a>
+        <h1 id="titulo-empleado"></h1>
+
+        <!-- Dashboard -->
+        <div id="employee-dashboard" class="dashboard">
+            <p>Total de tareas: <span id="emp-total-tasks">0</span></p>
+            <p>Pendientes: <span id="emp-pending-tasks">0</span></p>
+            <p>Vencidas: <span id="emp-overdue-tasks">0</span></p>
+        </div>
+
+        <!-- Lista de tareas -->
+        <ul id="employee-task-list" class="task-list empleado-task-list"></ul>
+    </div>
+
+    <script src="../js/empleados-tareas.js"></script>
+</body>
+</html>

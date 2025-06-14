@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const employeeSelector = document.getElementById('employee-selector');
     const employeeTaskList = document.getElementById('employee-task-list');
+    const empTotalTasks = document.getElementById('emp-total-tasks');
+    const empPendingTasks = document.getElementById('emp-pending-tasks');
+    const empOverdueTasks = document.getElementById('emp-overdue-tasks');
 
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
@@ -23,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (myTasks.length === 0) {
             employeeTaskList.innerHTML = '<p>No hay tareas asignadas</p>';
+            renderDashboard(myTasks);
             return;
         }
 
@@ -64,6 +68,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
             employeeTaskList.appendChild(li);
         });
+
+        renderDashboard(myTasks);
+    }
+
+    function renderDashboard(myTasks) {
+        const total = myTasks.length;
+        const pending = myTasks.filter(task => !task.completed).length;
+        const today = new Date();
+        const overdue = myTasks.filter(task => {
+            if (!task.dueDate) return false;
+            const dueDateObj = new Date(task.dueDate);
+            return dueDateObj < today && !task.completed;
+        }).length;
+
+        empTotalTasks.textContent = total;
+        empPendingTasks.textContent = pending;
+        empOverdueTasks.textContent = overdue;
     }
 
     function formatDate(dateString) {

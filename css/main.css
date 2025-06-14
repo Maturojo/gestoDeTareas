@@ -1,0 +1,81 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.task-list li.priority-1 {
+  border-left-color: red !important;
+}
+
+.task-list li.priority-2 {
+  border-left-color: orange !important;
+}
+
+.task-list li.priority-3 {
+  border-left-color: yellow !important;
+}
+
+.task-list li.priority-4 {
+  border-left-color: greenyellow !important;
+}
+
+.task-list li.priority-5 {
+  border-left-color: green !important;
+}
+
+.task-list li.priority-6 {
+  border-left-color: gray !important;
+}
+
+.task-list li.vencida {
+  border-left-color: red !important;
+}
+
+.task-list li.proxima {
+  border-left-color: orange !important;
+}
+
+.task-list li.completed {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+.task-list li {
+  background: #f9f9f9;
+  border-left: 5px solid #007bff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+.task-list li:hover {
+  transform: translateY(-5px);
+}
+
+.complete-btn {
+  background: #28a745;
+  color: #fff;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.complete-btn:hover {
+  background: #218838;
+}
+
+.empleado-task-list {
+  opacity: 1 !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+}
+
+/*# sourceMappingURL=main.css.map */

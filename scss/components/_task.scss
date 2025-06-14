@@ -1,148 +1,35 @@
     @use '../utils/variables';
 
-    // Prioridades (para admin)
-    .priority-1 { border-left: 5px solid red; }
-    .priority-2 { border-left: 5px solid orange; }
-    .priority-3 { border-left: 5px solid yellow; }
-    .priority-4 { border-left: 5px solid greenyellow; }
-    .priority-5 { border-left: 5px solid green; }
-    .priority-6 { border-left: 5px solid gray; }
+    // ===========================
+    // 🎯 ESTILOS DE PRIORIDAD
+    // ===========================
 
-    // Estilo general
-    .container {
-    max-width: 600px;
-    margin: 50px auto;
-    background: variables.$white;
-    padding: 20px;
-    border-radius: 8px;
-    }
+    .task-list li.priority-1 { border-left-color: red !important; }
+    .task-list li.priority-2 { border-left-color: orange !important; }
+    .task-list li.priority-3 { border-left-color: yellow !important; }
+    .task-list li.priority-4 { border-left-color: greenyellow !important; }
+    .task-list li.priority-5 { border-left-color: green !important; }
+    .task-list li.priority-6 { border-left-color: gray !important; }
 
-    form {
-    input, textarea {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-    }
-    }
+    // ===========================
+    // 🎯 ESTADOS ESPECIALES
+    // ===========================
 
-    button {
-    padding: 10px 15px;
-    margin: 5px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    }
+    .task-list li.vencida { border-left-color: red !important; }
+    .task-list li.proxima { border-left-color: orange !important; }
 
-    .complete-btn {
-    background: variables.$primary-color;
-    color: variables.$white;
-    }
-
-    .delete-btn {
-    background: variables.$danger-color;
-    color: variables.$white;
-    }
-
-    .completed {
-    text-decoration: line-through;
+    .task-list li.completed {
     opacity: 0.6;
+    text-decoration: line-through;
     }
 
-    .menu-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 30px;
-    }
-
-    .btn {
-    padding: 15px 25px;
-    border: none;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: 0.3s;
-    color: variables.$white;
-    }
-
-    .admin-btn {
-    background-color: variables.$primary-color;
-    }
-
-    .empleado-btn {
-    background-color: variables.$danger-color;
-    }
-
-    .btn:hover {
-    transform: scale(1.05);
-    }
-
-    .volver-btn {
-    background-color: #555;
-    color: variables.$white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 8px;
-    display: inline-block;
-    margin-bottom: 20px;
-    transition: 0.3s;
-    }
-
-    .volver-btn:hover {
-    background-color: #333;
-    transform: scale(1.05);
-    }
-
-    .vencida { border-left: 5px solid red !important; }
-    .proxima { border-left: 5px solid orange !important; }
-
-    .dashboard {
-    background-color: #f5f5f5;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-
-    .dashboard p {
-    margin: 5px 0;
-    font-weight: bold;
-    }
-
-    // Vista de empleados:
-    .empleado-container {
-    max-width: 1100px;
-    margin: 50px auto;
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .selector-container {
-    margin-bottom: 20px;
-
-    select {
-        padding: 10px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-    }
-    }
-
-    .task-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    }
+    // ===========================
+    // 🎯 CARD DE TAREAS GENERAL
+    // ===========================
 
     .task-list li {
     background: #f9f9f9;
-    border-left: 5px solid #007bff;
+    border-left: 5px solid #007bff; // base azul, pisado por prioridad
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -153,18 +40,9 @@
     }
     }
 
-    .task-list li.completed {
-    opacity: 0.6;
-    text-decoration: line-through;
-    }
-
-    .task-list li.vencida {
-    border-left-color: red;
-    }
-
-    .task-list li.proxima {
-    border-left-color: orange;
-    }
+    // ===========================
+    // 🎯 BOTÓN COMPLETAR
+    // ===========================
 
     .complete-btn {
     background: #28a745;
@@ -181,61 +59,12 @@
     }
     }
 
-    .employee-section {
-    margin-bottom: 30px;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-    background: #fff;
-    }
-
-    .employee-name {
-    font-size: 1.4rem;
-    padding: 20px;
-    margin: 0;
-    background-color: #f1f1f1;
-    border-bottom: 1px solid #ddd;
-    position: relative;
-    cursor: pointer;
-    user-select: none;
-
-    &::after {
-        content: "▶";
-        position: absolute;
-        right: 20px;
-        font-size: 1.2rem;
-        transition: transform 0.3s ease;
-    }
-
-    &.open::after {
-        transform: rotate(90deg);
-    }
-    }
-
-    .task-list {
-    list-style: none;
-    padding: 20px;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.4s ease;
-    }
-
-    .task-list.open {
-    opacity: 1;
-    max-height: 2000px; /* suficientemente grande para acomodar tareas */
-    }
+    // ===========================
+    // 🎯 AJUSTE PARA EMPLEADOS (SIN ACORDEÓN)
+    // ===========================
 
     .empleado-task-list {
     opacity: 1 !important;
     max-height: none !important;
     overflow: visible !important;
-}
-
-
+    }
