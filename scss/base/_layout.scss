@@ -1,10 +1,11 @@
 @use '../utils/variables' as vars;
 
     .container {
-    max-width: 600px;
+    max-width: 1100px;
     margin: 50px auto;
     background: vars.$white;
     padding: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     }
 
