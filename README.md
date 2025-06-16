@@ -1,72 +1,36 @@
-# 📝 Gestor de Tareas PRO - Proyecto Portfolio
+# 👋 ¡Hola! Soy Matías Rojo
 
-Este es un proyecto completo de **Gestor de Tareas** desarrollado como práctica profesional de desarrollo web.  
-Se trabajó en:
+Soy un desarrollador apasionado por la programación, el desarrollo web y la mejora continua. Actualmente trabajo en Sur Maderas, donde combino tecnología con procesos comerciales.
 
-- Separación de roles
-- Organización de carpetas
-- Manejo de datos persistentes
-- Estructuración de código profesional
-- Debug y resolución de problemas reales (rutas, localStorage, validaciones)
+## 🎯 Áreas de interés
 
----
+- Desarrollo Full Stack (JavaScript, HTML, CSS, Sass, Bootstrap)
+- Automatización de procesos comerciales
+- Optimización de algoritmos (optimizadores de cortes, cotizadores)
 
-## 🚀 Descripción del proyecto
+## 💻 Proyectos Destacados
 
-El Gestor de Tareas permite:
+### ✨ Gestor de Tareas PRO
 
-- ✅ Crear tareas desde la vista de Administrador.
-- ✅ Asignar tareas a distintos empleados.
-- ✅ Definir prioridad numérica de cada tarea (del 1 al 6).
-- ✅ Filtrar tareas por pendientes, completadas o todas.
-- ✅ Mostrar contador de tareas pendientes por cada empleado.
-- ✅ Los empleados sólo pueden ver y completar sus propias tareas.
-- ✅ Persistencia de datos utilizando `localStorage`.
-- ✅ Separación completa entre vista de Administrador y vista de Empleado.
-- ✅ Navegación completa desde un menú inicial.
+Proyecto profesional de asignación de tareas, roles de usuario (Administrador / Empleado), gestión de estado de tareas, filtros dinámicos y persistencia de datos con `localStorage`.  
+Tecnologías: **JavaScript, HTML, CSS, Sass**
 
----
+### ✨ Optimización de cortes para Sur Maderas
 
-## ⚙️ Tecnologías utilizadas
+Aplicación de optimización de cortes para mejorar el aprovechamiento de materiales en procesos de carpintería.  
+Tecnologías: **JavaScript, HTML, Canvas**
 
-- HTML5
-- CSS3 + SCSS (modularizado)
-- JavaScript Vanilla (puro, sin frameworks)
-- LocalStorage para persistencia
-- Git & GitHub para control de versiones
+### ✨ Catálogo Exclusivo Sur Maderas
 
----
+Landing page responsiva para exhibición de productos con diseño limpio y estructura modular.  
+Tecnologías: **HTML, CSS, Bootstrap, Sass**
 
-## 🎯 Funcionalidades detalladas
+## 🚀 Actualmente estoy aprendiendo
 
-### ✅ Administrador (`admin.html`)
+- Desarrollo avanzado en Full Stack
+- Mejores prácticas de Clean Code
 
-- Crea tareas con título, descripción, responsable y prioridad.
-- Filtra tareas por estado: todas, pendientes o completadas.
-- Ordena las tareas por prioridad numérica (más baja = mayor prioridad).
-- Muestra contador de tareas pendientes por cada empleado.
-- Puede eliminar tareas.
-- Puede marcar tareas como completadas o pendientes.
-- Persistencia automática en `localStorage`.
+## 📫 Cómo contactarme
 
-### ✅ Empleados (`empleado.html`)
-
-- Seleccionan su propio nombre (dropdown fijo).
-- Ven sólo sus tareas asignadas.
-- Marcan sus tareas como completadas o pendientes.
-- No pueden crear, eliminar ni modificar otras tareas.
-
-### ✅ Menú inicial (`index.html`)
-
-- Permite ingresar a cualquiera de los dos perfiles:
-  - Administración
-  - Empleado
-
----
-
-Desarrollador: Matías Rojo
-
-Localidad: 🇦🇷 Argentina
-
-Proyecto realizado como práctica profesional de desarrollo full vanilla frontend.
-
+- **Email:** maturojo123mdq@gmail.com
+- **LinkedIn:** [www.linkedin.com/in/matias-nahuel-rojo-antuña-385624230](https://www.linkedin.com/in/matias-nahuel-rojo-antu%C3%B1a-385624230)
