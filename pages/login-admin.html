@@ -2,37 +2,42 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ingreso al Admin</title>
+    <title>Login Administrador</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div class="empleado-container">
-        <h1>Acceso al Administrador</h1>
+
+    <div class="login-container">
+        <h1>Acceso Administrador</h1>
 
         <form id="login-form">
-            <input type="password" id="password" placeholder="Ingrese la clave" required>
+            <input type="password" id="admin-password" placeholder="Contraseña de administrador" required>
             <button type="submit">Ingresar</button>
         </form>
 
-        <p id="error-msg" style="color: red; display: none;">Clave incorrecta</p>
+        <p id="error-msg" class="error">⚠ Contraseña incorrecta</p>
     </div>
 
     <script>
-        const loginForm = document.getElementById('login-form');
-        const passwordInput = document.getElementById('password');
-        const errorMsg = document.getElementById('error-msg');
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('login-form');
+            const passwordInput = document.getElementById('admin-password');
+            const errorMsg = document.getElementById('error-msg');
 
-        const claveCorrecta = 'admin123';  // 🔐 Aquí podés definir la clave que vos quieras
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
 
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+                const password = passwordInput.value;
 
-            if (passwordInput.value === claveCorrecta) {
-                window.location.href = 'admin.html';
-            } else {
-                errorMsg.style.display = 'block';
-            }
+                if (password === "admin123") {
+                    localStorage.setItem('admin-auth', 'true');
+                    window.location.href = "admin.html";
+                } else {
+                    errorMsg.style.display = 'block';
+                }
+            });
         });
     </script>
+
 </body>
 </html>

@@ -1,8 +1,9 @@
-@use 'utils/variables';
 @use 'base/reset';
+@use 'utils/variables';
+@use 'base/layout';
+@use 'base/form';
+@use 'components/admin';
 @use 'components/task';
-
-    body {
-    font-family: Arial, sans-serif;
-    background: variables.$background-color;
-    }
+@use 'components/dashboard';
+@use 'components/empleados';
+@use 'components/login';

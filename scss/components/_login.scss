@@ -1,0 +1,48 @@
+@use '../utils/variables' as vars;
+@use 'sass:color';
+
+    .login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    background: vars.$white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    text-align: center;
+
+    h1 {
+        margin-bottom: 30px;
+        color: #333;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px 20px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+
+    button {
+        padding: 12px 30px;
+        background-color: vars.$primary-color;
+        border: none;
+        border-radius: 8px;
+        color: vars.$white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+
+        &:hover {
+        background-color: color.adjust(vars.$primary-color, $lightness: -5%);
+        transform: scale(1.05);
+        }
+    }
+
+    .error {
+        color: vars.$danger-color;
+        margin-top: 10px;
+        display: none;
+    }
+    }

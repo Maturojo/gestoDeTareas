@@ -1,49 +1,60 @@
-    @use '../utils/variables';
+@use '../utils/variables' as vars;
 
-    // ===========================
-    // 🎯 ESTILOS DE PRIORIDAD
-    // ===========================
+// Priorización de colores según prioridad
+.priority-1 { border-left: 5px solid red; }
+.priority-2 { border-left: 5px solid orange; }
+.priority-3 { border-left: 5px solid yellow; }
+.priority-4 { border-left: 5px solid greenyellow; }
+.priority-5 { border-left: 5px solid green; }
+.priority-6 { border-left: 5px solid gray; }
 
-    .task-list li.priority-1 { border-left-color: red !important; }
-    .task-list li.priority-2 { border-left-color: orange !important; }
-    .task-list li.priority-3 { border-left-color: yellow !important; }
-    .task-list li.priority-4 { border-left-color: greenyellow !important; }
-    .task-list li.priority-5 { border-left-color: green !important; }
-    .task-list li.priority-6 { border-left-color: gray !important; }
-
-    // ===========================
-    // 🎯 ESTADOS ESPECIALES
-    // ===========================
-
-    .task-list li.vencida { border-left-color: red !important; }
-    .task-list li.proxima { border-left-color: orange !important; }
-
-    .task-list li.completed {
-    opacity: 0.6;
-    text-decoration: line-through;
-    }
-
-    // ===========================
-    // 🎯 CARD DE TAREAS GENERAL
-    // ===========================
-
-    .task-list li {
-    background: #f9f9f9;
-    border-left: 5px solid #007bff; // base azul, pisado por prioridad
+    // Comportamiento del acordeón visual
+    .task-list {
+    list-style: none;
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s ease;
 
-    &:hover {
+    &.open {
+        opacity: 1;
+        max-height: 2000px;
+    }
+
+    li {
+        background: #f9f9f9;
+        border-left: 5px solid #007bff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+
+        &:hover {
         transform: translateY(-5px);
+        }
+
+        &.completed {
+        opacity: 0.6;
+        text-decoration: line-through;
+        }
+
+        &.vencida {
+        border-left-color: red;
+        }
+
+        &.proxima {
+        border-left-color: orange;
+        }
     }
     }
 
-    // ===========================
-    // 🎯 BOTÓN COMPLETAR
-    // ===========================
 
+    // Botón de completar
     .complete-btn {
     background: #28a745;
     color: #fff;
@@ -59,12 +70,15 @@
     }
     }
 
-    // ===========================
-    // 🎯 AJUSTE PARA EMPLEADOS (SIN ACORDEÓN)
-    // ===========================
-
-    .empleado-task-list {
-    opacity: 1 !important;
-    max-height: none !important;
-    overflow: visible !important;
+    // Botón de eliminar
+    .delete-btn {
+    background: vars.$danger-color;
+    color: vars.$white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: 0.3s;
     }

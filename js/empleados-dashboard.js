@@ -9,17 +9,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const completed = myTasks.filter(task => task.completed).length;
 
         const card = document.createElement('div');
-        card.classList.add('task-card');
+        card.classList.add('employee-card');
+
         card.innerHTML = `
             <h3>${employee}</h3>
             <p>Pendientes: ${pending}</p>
             <p>Completadas: ${completed}</p>
-            <button class="ver-btn">Ver tareas</button>
         `;
 
-        card.querySelector('.ver-btn').addEventListener('click', () => {
-            // 🔧 Corrección de ruta relativa
-            window.location.href = `./empleado-tareas.html?empleado=${encodeURIComponent(employee)}`;
+        card.addEventListener('click', () => {
+            window.location.href = `empleado-tareas.html?empleado=${encodeURIComponent(employee)}`;
         });
 
         cardsContainer.appendChild(card);

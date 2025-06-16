@@ -1,0 +1,39 @@
+@use '../utils/variables' as vars;
+
+    .container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: vars.$white;
+    padding: 20px;
+    border-radius: 8px;
+    }
+
+    .menu-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    }
+
+    .btn {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    color: vars.$white;
+
+    &.admin-btn { background-color: vars.$primary-color; }
+    &.empleado-btn { background-color: vars.$danger-color; }
+    &.volver-btn {
+        background-color: #555;
+        margin-bottom: 20px;
+    }
+
+    &:hover {
+        transform: scale(1.05);
+    }
+    }

@@ -4,103 +4,78 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskDesc = document.getElementById('task-desc');
     const taskOwner = document.getElementById('task-owner');
     const taskPriority = document.getElementById('task-priority');
-    const taskDueDate = document.getElementById('task-due-date');
-    const employeesContainer = document.getElementById('employees-container');
+    const taskDueDate = document.getElementById('task-dueDate');
+    const employeeSections = document.getElementById('employee-sections');
 
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    let openEmployees = [];
-
     const employees = ["Matias", "Facundo", "Ariel", "Guillermo"];
 
-    renderDashboard();
     renderEmployees();
+    updateDashboard();
 
     taskForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const title = taskTitle.value.trim();
-        const desc = taskDesc.value.trim();
-        const owner = taskOwner.value;
-        const priority = parseInt(taskPriority.value);
-        const dueDate = taskDueDate.value;
-
-        if (title === '') {
-            alert('Por favor ingresa un título');
-            return;
-        }
-
         const newTask = {
             id: Date.now(),
-            title,
-            desc,
-            owner,
-            priority,
-            dueDate,
-            createdAt: new Date().toISOString(),
+            title: taskTitle.value.trim(),
+            desc: taskDesc.value.trim(),
+            owner: normalizeString(taskOwner.value),
+            priority: parseInt(taskPriority.value),
+            dueDate: taskDueDate.value,
             completed: false
         };
 
         tasks.push(newTask);
         saveTasks();
-        renderDashboard();
-        renderEmployees();
         taskForm.reset();
+        renderEmployees();
+        updateDashboard();
     });
 
-    function normalizeString(str) {
-        return str?.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
-    }
-
     function renderEmployees() {
-        // Guardamos los empleados que están abiertos antes de renderizar
-        openEmployees = Array.from(document.querySelectorAll('.employee-name.open')).map(header => header.textContent);
+        const openSections = new Set(
+            Array.from(document.querySelectorAll('.employee-name.open')).map(h => h.textContent)
+        );
 
-        employeesContainer.innerHTML = '';
+        employeeSections.innerHTML = '';
 
         employees.forEach(employee => {
-            const employeeDiv = document.createElement('div');
-            employeeDiv.classList.add('employee-section');
+            const section = document.createElement('div');
+            section.classList.add('employee-section');
 
             const header = document.createElement('h2');
-            header.textContent = employee;
             header.classList.add('employee-name');
-            header.style.cursor = 'pointer';
+            header.textContent = employee;
 
             const taskList = document.createElement('ul');
-            taskList.classList.add('task-list');
+            taskList.classList.add('task-list-admin'); // Sin 'closed'
 
-            const myTasks = tasks.filter(task => 
-                normalizeString(task.owner) === normalizeString(employee)
-            );
+            const employeeTasks = tasks.filter(task => normalizeString(task.owner) === normalizeString(employee));
+            employeeTasks.sort((a, b) => a.priority - b.priority);
 
-            myTasks.sort((a, b) => a.priority - b.priority);
-
-            myTasks.forEach(task => {
+            employeeTasks.forEach(task => {
                 const li = document.createElement('li');
                 li.classList.add(`priority-${task.priority}`);
 
-                const today = new Date();
                 if (task.dueDate) {
+                    const today = new Date();
                     const dueDateObj = new Date(task.dueDate);
                     const diffInDays = (dueDateObj - today) / (1000 * 60 * 60 * 24);
-
                     if (dueDateObj < today) {
                         li.classList.add('vencida');
-                    } else if (diffInDays <= 2 && diffInDays >= 0) {
+                    } else if (diffInDays <= 2) {
                         li.classList.add('proxima');
                     }
                 }
 
-                if (task.completed) {
-                    li.classList.add('completed');
-                }
+                if (task.completed) li.classList.add('completed');
 
                 li.innerHTML = `
                     <h3>${task.title}</h3>
                     <p>${task.desc}</p>
                     <p><strong>Prioridad:</strong> ${task.priority}</p>
                     <p><strong>Vence:</strong> ${task.dueDate || 'Sin fecha'}</p>
-                    <p><strong>Creada:</strong> ${formatDate(task.createdAt)}</p>
                     <button class="complete-btn">${task.completed ? 'Desmarcar' : 'Completar'}</button>
                     <button class="delete-btn">Eliminar</button>
                 `;
@@ -108,52 +83,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 li.querySelector('.complete-btn').addEventListener('click', () => {
                     task.completed = !task.completed;
                     saveTasks();
-                    renderDashboard();
                     renderEmployees();
+                    updateDashboard();
                 });
 
                 li.querySelector('.delete-btn').addEventListener('click', () => {
                     tasks = tasks.filter(t => t.id !== task.id);
                     saveTasks();
-                    renderDashboard();
                     renderEmployees();
+                    updateDashboard();
                 });
 
                 taskList.appendChild(li);
             });
 
-            if (myTasks.length > 0) {
-                header.addEventListener('click', () => {
-                    const isOpen = taskList.classList.toggle('open');
-                    header.classList.toggle('open', isOpen);
-                });
-            } else {
-                const emptyMsg = document.createElement('p');
-                emptyMsg.textContent = "No hay tareas";
-                emptyMsg.style.padding = "15px";
-                taskList.appendChild(emptyMsg);
-            }
+            header.addEventListener('click', () => {
+                header.classList.toggle('open');
+                taskList.classList.toggle('open');
+            });
 
-            // Si estaba abierto antes, lo abrimos de nuevo
-            if (openEmployees.includes(employee)) {
+            if (openSections.has(employee)) {
                 header.classList.add('open');
                 taskList.classList.add('open');
             }
 
-            employeeDiv.appendChild(header);
-            employeeDiv.appendChild(taskList);
-            employeesContainer.appendChild(employeeDiv);
+            section.appendChild(header);
+            section.appendChild(taskList);
+            employeeSections.appendChild(section);
         });
     }
 
-    function renderDashboard() {
+    function updateDashboard() {
         const total = tasks.length;
         const pending = tasks.filter(task => !task.completed).length;
-        const today = new Date();
         const overdue = tasks.filter(task => {
             if (!task.dueDate) return false;
-            const dueDateObj = new Date(task.dueDate);
-            return dueDateObj < today && !task.completed;
+            return new Date(task.dueDate) < new Date() && !task.completed;
         }).length;
 
         document.getElementById('total-tasks').textContent = total;
@@ -161,18 +126,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('overdue-tasks').textContent = overdue;
     }
 
-    function formatDate(dateString) {
-        if (!dateString) return 'Sin fecha';
-        const date = new Date(dateString);
-        return date.toLocaleDateString('es-AR', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-    }
-
     function saveTasks() {
         localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    function normalizeString(str) {
+        return str?.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
     }
 });

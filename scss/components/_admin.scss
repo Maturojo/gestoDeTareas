@@ -1,0 +1,73 @@
+    .task-list-admin {
+    list-style: none;
+    padding: 20px;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: all 0.5s ease;
+
+    &.open {
+        max-height: 2000px;  // suficientemente alto para cualquier cantidad de tareas
+        opacity: 1;
+    }
+    }
+
+    .task-list-admin li {
+    background: #f9f9f9;
+    border-left: 5px solid #007bff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+
+    &:hover {
+        transform: translateY(-5px);
+    }
+
+    &.completed {
+        opacity: 0.6;
+        text-decoration: line-through;
+    }
+
+    &.vencida {
+        border-left-color: red;
+    }
+
+    &.proxima {
+        border-left-color: orange;
+    }
+    }
+
+    .complete-btn {
+    background: #28a745;
+    color: #fff;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+        background: #218838;
+    }
+    }
+
+    .delete-btn {
+    background: #f44336;
+    color: #fff;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+        background: #d32f2f;
+    }
+    }

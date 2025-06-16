@@ -1,0 +1,10 @@
+    @use '../utils/variables' as vars;
+
+    form {
+    input, textarea, select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+    }
