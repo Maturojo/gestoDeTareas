@@ -106,3 +106,15 @@
         background: #d32f2f;
     }
     }
+
+    .obs-textarea {
+    width: 100%;
+    min-height: 60px;
+    resize: vertical;
+    font-size: 0.95rem;
+    padding: 0.5rem;
+    margin-top: 0.3rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    }
+

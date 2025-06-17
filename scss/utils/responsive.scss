@@ -1,5 +1,9 @@
     @use '../utils/variables' as vars;
 
+    * {
+        margin: 1%;
+    }
+
     // Estilo responsive para el contenedor principal
     .empleado-container,
     .admin-container {

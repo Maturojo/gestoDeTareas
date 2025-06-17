@@ -59,6 +59,34 @@ document.addEventListener('DOMContentLoaded', () => {
             employeeTaskList.appendChild(li);
         });
 
+        // Mostrar observación general (editable por empleado)
+        const observaciones = JSON.parse(localStorage.getItem('observaciones')) || {};
+        const observacionText = observaciones[employeeOriginal] || '';
+
+        const obsSection = document.createElement('div');
+        obsSection.style.marginTop = '2rem';
+
+        const obsLabel = document.createElement('label');
+        obsLabel.innerHTML = '<strong>Mi observación general:</strong>';
+        obsLabel.style.display = 'block';
+
+        const obsTextarea = document.createElement('textarea');
+        obsTextarea.classList.add('obs-textarea');
+        obsTextarea.value = observacionText;
+        obsTextarea.style.width = '100%';
+        obsTextarea.style.minHeight = '60px';
+        obsTextarea.style.marginTop = '0.5rem';
+
+        obsTextarea.addEventListener('input', () => {
+            observaciones[employeeOriginal] = obsTextarea.value;
+            localStorage.setItem('observaciones', JSON.stringify(observaciones));
+        });
+
+        obsSection.appendChild(obsLabel);
+        obsSection.appendChild(obsTextarea);
+
+        employeeTaskList.appendChild(obsSection);
+
         document.getElementById('emp-total-tasks').textContent = myTasks.length;
         document.getElementById('emp-pending-tasks').textContent = pending;
         document.getElementById('emp-overdue-tasks').textContent = overdue;

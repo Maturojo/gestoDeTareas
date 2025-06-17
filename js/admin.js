@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
             owner: normalizeString(taskOwner.value),
             priority: parseInt(taskPriority.value),
             dueDate: taskDueDate.value,
-            completed: false
+            completed: false,
         };
 
         tasks.push(newTask);
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             header.textContent = employee;
 
             const taskList = document.createElement('ul');
-            taskList.classList.add('task-list-admin'); // Sin 'closed'
+            taskList.classList.add('task-list-admin');
 
             const employeeTasks = tasks.filter(task => normalizeString(task.owner) === normalizeString(employee));
             employeeTasks.sort((a, b) => a.priority - b.priority);
@@ -97,19 +97,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 taskList.appendChild(li);
             });
 
+            // Agregar observación por empleado al final
+            const observaciones = JSON.parse(localStorage.getItem('observaciones')) || {};
+            const observacionText = observaciones[employee] || '';
+
+            const obsLabel = document.createElement('label');
+            obsLabel.innerHTML = '<strong>Observaciones generales:</strong>';
+            obsLabel.style.display = 'block';
+            obsLabel.style.marginTop = '1rem';
+
+            const obsTextarea = document.createElement('textarea');
+            obsTextarea.classList.add('obs-textarea');
+            obsTextarea.placeholder = 'Observación general del empleado...';
+            obsTextarea.value = observacionText;
+            obsTextarea.style.marginBottom = '1rem';
+
+            obsTextarea.addEventListener('input', () => {
+                observaciones[employee] = obsTextarea.value;
+                localStorage.setItem('observaciones', JSON.stringify(observaciones));
+            });
+
+            section.appendChild(header);
+            section.appendChild(taskList);
+            section.appendChild(obsLabel);
+            section.appendChild(obsTextarea);
+            employeeSections.appendChild(section);
+
             header.addEventListener('click', () => {
                 header.classList.toggle('open');
                 taskList.classList.toggle('open');
+                obsTextarea.classList.toggle('open');
             });
 
             if (openSections.has(employee)) {
                 header.classList.add('open');
                 taskList.classList.add('open');
+                obsTextarea.classList.add('open');
             }
-
-            section.appendChild(header);
-            section.appendChild(taskList);
-            employeeSections.appendChild(section);
         });
     }
 
