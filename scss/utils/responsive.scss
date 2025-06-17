@@ -1,0 +1,89 @@
+    @use '../utils/variables' as vars;
+
+    // Estilo responsive para el contenedor principal
+    .empleado-container,
+    .admin-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+    }
+
+    // Reorganiza tareas en distintas columnas sin achicar contenido
+    .task-list-admin,
+    .task-list {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    // Asegura que los textos y tarjetas no se achiquen demasiado
+    .task-list-admin li,
+    .task-list li {
+    width: 100%;
+    padding: 1.5rem;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    }
+
+    .task-list-admin li:hover,
+    .task-list li:hover {
+    transform: translateY(-5px);
+    }
+
+    // Botones
+    .complete-btn,
+    .delete-btn {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    display: block;
+    padding: 0.8rem;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    border-radius: 5px;
+    }
+
+    // Tipografía global adaptable
+    body {
+    font-size: 16px;
+
+    @media (max-width: 480px) {
+        font-size: 14px;
+        background-color: #fff;
+    }
+    }
+
+    // Media query para pantallas pequeñas
+    @media (max-width: 480px) {
+    .empleado-container,
+    .admin-container {
+        width: 100vw;
+        max-width: none;
+        margin: 0;
+        padding: 1rem;
+    }
+
+    .task-list-admin,
+    .task-list {
+        grid-template-columns: 1fr;
+    }
+
+    .task-list-admin li,
+    .task-list li {
+        padding: 1rem;
+        font-size: 0.95rem;
+    }
+
+    h2, h3 {
+        font-size: 1.2rem;
+    }
+
+    .btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+    }

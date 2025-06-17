@@ -1,0 +1,17 @@
+Por hacer
+
+-Fecha en dashboard de empleados
+-puesto al lado del nombre
+-quitar vencimiento
+-Ayudante Virtual (Nombres de archivo)
+-El empleado pueda poner observaciones
+-Poner en hosting asi no se borra
+-Usuaria para cada empleado
+-que se puedan mandar mensajes al admin
+
+
+ADMINISTRADORES
+-Gustavo
+-Martin
+-Cecilia
+
