@@ -16,3 +16,24 @@
     });
 
     module.exports = router;
+
+    // PUT: actualizar tarea (ej. marcar como completada)
+router.put('/:id', async (req, res) => {
+    try {
+        const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json(updatedTask);
+    } catch (err) {
+        res.status(500).json({ error: 'Error al actualizar la tarea' });
+    }
+});
+
+// DELETE: eliminar tarea
+router.delete('/:id', async (req, res) => {
+    try {
+        await Task.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Tarea eliminada correctamente' });
+    } catch (err) {
+        res.status(500).json({ error: 'Error al eliminar la tarea' });
+    }
+});
+
