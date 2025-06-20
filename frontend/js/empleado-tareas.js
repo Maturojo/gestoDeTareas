@@ -9,7 +9,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const employeeName = document.getElementById('employee-name');
     const employeeTaskList = document.getElementById('employee-task-list');
 
-    employeeName.textContent = `Tareas de ${employeeOriginal}`;
+    // Puestos
+    const puestos = {
+        Matias: "WhatsApp",
+        Facundo: "Taller",
+        Ariel: "Depósito",
+        Guillermo: "Envíos"
+    };
+    const puesto = puestos[employeeOriginal] || '';
+
+    employeeName.textContent = `Tareas de ${employeeOriginal}${puesto ? ` / ${puesto}` : ''}`;
 
     let tasks = await fetchTasks();
     renderEmployeeTasks(tasks);
@@ -134,6 +143,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function normalizeString(str) {
-        return str?.trim().toLowerCase().normalize("NFD").replace(/\u0300-\u036f/g, '');
+        return str?.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
     }
 });
