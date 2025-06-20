@@ -1,7 +1,7 @@
 Por hacer
 
 -Fecha en dashboard de empleados
--puesto al lado del nombre
+-puesto al lado del nombre (listo)
 -quitar vencimiento
 -Ayudante Virtual (Nombres de archivo) (Listo)
 -El empleado pueda poner observaciones (Listo)

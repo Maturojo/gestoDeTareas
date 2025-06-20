@@ -9,16 +9,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const taskDueDate = document.getElementById('task-dueDate');
     const employeeSections = document.getElementById('employee-sections');
 
-    const employeeRoles = {
-        Matias: "WhatsApp",
-        Facundo: "Taller",
-        Ariel: "Ventas",
-        Guillermo: "Reparto"
+    const empleadosConPuesto = {
+        Matias: "Whatsapp",
+        Facundo: "Tienda",
+        Ariel: "Producción",
+        Guillermo: "Delivery"
     };
 
-    const employees = Object.keys(employeeRoles);
     let tasks = await fetchTasks();
-
     renderEmployees();
     updateDashboard();
 
@@ -44,6 +42,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         taskForm.reset();
         renderEmployees();
         updateDashboard();
+
+        showToast("Tarea agregada ✅");
     });
 
     async function fetchTasks() {
@@ -58,13 +58,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         employeeSections.innerHTML = '';
 
-        for (const employee of employees) {
+        for (const employee in empleadosConPuesto) {
+            const puesto = empleadosConPuesto[employee];
             const section = document.createElement('div');
             section.classList.add('employee-section');
 
             const header = document.createElement('h2');
             header.classList.add('employee-name');
-            header.textContent = `${employee} / ${employeeRoles[employee]}`;
+            header.textContent = `${employee} / ${puesto}`;
 
             const taskList = document.createElement('ul');
             taskList.classList.add('task-list-admin');
@@ -72,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const employeeTasks = tasks.filter(task => normalizeString(task.owner) === normalizeString(employee));
             employeeTasks.sort((a, b) => a.priority - b.priority);
 
-            employeeTasks.forEach(task => {
+            for (const task of employeeTasks) {
                 const li = document.createElement('li');
                 li.classList.add(`priority-${task.priority}`);
 
@@ -107,6 +108,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     tasks = await fetchTasks();
                     renderEmployees();
                     updateDashboard();
+                    showToast(task.completed ? "Tarea desmarcada 🔁" : "Tarea completada ✅");
                 });
 
                 li.querySelector('.delete-btn').addEventListener('click', async () => {
@@ -116,10 +118,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     tasks = await fetchTasks();
                     renderEmployees();
                     updateDashboard();
+                    showToast("Tarea eliminada ❌");
                 });
 
                 taskList.appendChild(li);
-            });
+            }
 
             const obsLabel = document.createElement('label');
             obsLabel.innerHTML = '<strong>Observaciones generales:</strong>';
@@ -159,7 +162,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 obsTextarea.classList.toggle('open');
             });
 
-            if (openSections.has(`${employee} / ${employeeRoles[employee]}`)) {
+            if (openSections.has(`${employee} / ${puesto}`)) {
                 header.classList.add('open');
                 taskList.classList.add('open');
                 obsTextarea.classList.add('open');
@@ -182,5 +185,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function normalizeString(str) {
         return str?.trim().toLowerCase().normalize("NFD").replace(/\u0300-\u036f/g, '');
+    }
+
+    function showToast(message) {
+        Toastify({
+            text: message,
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#333",
+            stopOnFocus: true
+        }).showToast();
     }
 });

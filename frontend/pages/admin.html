@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Administrador - Gestor de Tareas</title>
     <link rel="stylesheet" href="../css/style.css">
+        <!-- Toastify CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
 </head>
 <body>
     <div class="container">
@@ -51,6 +54,10 @@
     <script type="module" src="/js/config.js"></script>
     <!-- 👇 Luego importamos admin.js que depende de config.js -->
     <script type="module" src="/js/admin.js" defer></script>
+
+        <!-- Toastify JS -->
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
 
     <script>
         if (localStorage.getItem('admin-auth') !== 'true') {

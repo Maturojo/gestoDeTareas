@@ -1,22 +1,15 @@
 import { API_BASE_URL } from './config.js';
+import Toastify from 'https://cdn.jsdelivr.net/npm/toastify-js/src/toastify-es.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const employeeOriginal = urlParams.get('empleado');
     const normalizedEmployee = normalizeString(employeeOriginal);
 
-    const puestos = {
-        Matias: "WhatsApp",
-        Facundo: "Taller",
-        Ariel: "Logística",
-        Guillermo: "Cortes"
-    };
-
     const employeeName = document.getElementById('employee-name');
     const employeeTaskList = document.getElementById('employee-task-list');
 
-    const puesto = puestos[employeeOriginal] || "";
-    employeeName.textContent = `Tareas de ${employeeOriginal}${puesto ? " / " + puesto : ""}`;
+    employeeName.textContent = `Tareas de ${employeeOriginal}`;
 
     let tasks = await fetchTasks();
     renderEmployeeTasks(tasks);
@@ -79,6 +72,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                     });
                     tasks = await fetchTasks();
                     renderEmployeeTasks(tasks);
+
+                    Toastify({
+                        text: !task.completed ? "Tarea completada ✅" : "Tarea marcada como pendiente",
+                        duration: 3000,
+                        gravity: "top",
+                        position: "right",
+                        style: {
+                            background: "#4CAF50"
+                        }
+                    }).showToast();
                 } catch (error) {
                     console.error('Error actualizando tarea:', error);
                 }
@@ -101,7 +104,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         obsTextarea.style.minHeight = '60px';
         obsTextarea.style.marginTop = '0.5rem';
 
-        // Cargar observación desde API
         try {
             const res = await fetch(`${API_BASE_URL}/observaciones/${employeeOriginal}`);
             const data = await res.json();
@@ -110,7 +112,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error('No se pudo cargar la observación');
         }
 
-        // Guardar cuando el usuario escribe
         obsTextarea.addEventListener('input', async () => {
             try {
                 await fetch(`${API_BASE_URL}/observaciones/${employeeOriginal}`, {
@@ -133,6 +134,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function normalizeString(str) {
-        return str?.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
+        return str?.trim().toLowerCase().normalize("NFD").replace(/\u0300-\u036f/g, '');
     }
 });
