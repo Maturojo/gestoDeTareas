@@ -5,10 +5,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const employeeOriginal = urlParams.get('empleado');
     const normalizedEmployee = normalizeString(employeeOriginal);
 
+    const puestos = {
+        Matias: "WhatsApp",
+        Facundo: "Taller",
+        Ariel: "Logística",
+        Guillermo: "Cortes"
+    };
+
     const employeeName = document.getElementById('employee-name');
     const employeeTaskList = document.getElementById('employee-task-list');
 
-    employeeName.textContent = `Tareas de ${employeeOriginal}`;
+    const puesto = puestos[employeeOriginal] || "";
+    employeeName.textContent = `Tareas de ${employeeOriginal}${puesto ? " / " + puesto : ""}`;
 
     let tasks = await fetchTasks();
     renderEmployeeTasks(tasks);

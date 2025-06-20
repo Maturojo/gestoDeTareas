@@ -5,7 +5,7 @@ Por hacer
 -quitar vencimiento
 -Ayudante Virtual (Nombres de archivo) (Listo)
 -El empleado pueda poner observaciones (Listo)
--Poner en hosting asi no se borra
+-Poner en hosting asi no se borra (listo)
 -Usuaria para cada empleado
 -que se puedan mandar mensajes al admin
 
@@ -22,4 +22,37 @@ cd C:/Programacion/Sur_Maderas/gestorDeTareas/gestor-tareas-backend
 node
 
 para iniciar!
+
+🧠 Ideas para llevarlo a otro nivel:
+✅ Funcionalidad avanzada
+Editar tareas existentes (botón “Editar” al lado de “Eliminar”).
+
+Historial de tareas completadas con fecha.
+
+Adjuntar archivos o imágenes (ej. presupuestos, fotos del trabajo).
+
+Comentarios por tarea (tipo foro interno).
+
+🎨 UX/UI más pro
+Agregá toasts de confirmación (tipo “Tarea agregada ✅” con SweetAlert o Toastify).
+
+Mejorá la visual con íconos de FontAwesome (check, basura, lápiz).
+
+Animaciones suaves al mostrar/ocultar secciones.
+
+📈 Admin dashboard
+Gráficos con Chart.js:
+
+Cantidad de tareas completadas por mes.
+
+Ranking de empleados más activos.
+
+🔐 Seguridad
+Login de empleados (simple por ahora con localStorage, después con JWT y base de datos).
+
+🌐 Internacionalización
+¿Querés mostrarlo en inglés también? Fácil con un archivo lang.js con textos por idioma.
+
+📱 Optimización móvil
+Usar media queries o Bootstrap para que se vea impecable en celular.
 

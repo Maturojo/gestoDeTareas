@@ -9,7 +9,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const taskDueDate = document.getElementById('task-dueDate');
     const employeeSections = document.getElementById('employee-sections');
 
-    const employees = ["Matias", "Facundo", "Ariel", "Guillermo"];
+    const employeeRoles = {
+        Matias: "WhatsApp",
+        Facundo: "Taller",
+        Ariel: "Ventas",
+        Guillermo: "Reparto"
+    };
+
+    const employees = Object.keys(employeeRoles);
     let tasks = await fetchTasks();
 
     renderEmployees();
@@ -57,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const header = document.createElement('h2');
             header.classList.add('employee-name');
-            header.textContent = employee;
+            header.textContent = `${employee} / ${employeeRoles[employee]}`;
 
             const taskList = document.createElement('ul');
             taskList.classList.add('task-list-admin');
@@ -114,7 +121,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 taskList.appendChild(li);
             });
 
-            // Observación por empleado
             const obsLabel = document.createElement('label');
             obsLabel.innerHTML = '<strong>Observaciones generales:</strong>';
             obsLabel.style.display = 'block';
@@ -153,7 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 obsTextarea.classList.toggle('open');
             });
 
-            if (openSections.has(employee)) {
+            if (openSections.has(`${employee} / ${employeeRoles[employee]}`)) {
                 header.classList.add('open');
                 taskList.classList.add('open');
                 obsTextarea.classList.add('open');
