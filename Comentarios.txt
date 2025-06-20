@@ -34,7 +34,7 @@ Adjuntar archivos o imágenes (ej. presupuestos, fotos del trabajo).
 Comentarios por tarea (tipo foro interno).
 
 🎨 UX/UI más pro
-Agregá toasts de confirmación (tipo “Tarea agregada ✅” con SweetAlert o Toastify).
+Agregá toasts de confirmación (tipo “Tarea agregada ✅” con SweetAlert o Toastify). (listo )
 
 Mejorá la visual con íconos de FontAwesome (check, basura, lápiz).
 

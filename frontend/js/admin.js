@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const empleadosConPuesto = {
         Matias: "Whatsapp",
-        Facundo: "Tienda",
+        Facundo: "Taller",
         Ariel: "Producción",
         Guillermo: "Delivery"
     };
