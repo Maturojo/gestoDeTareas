@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const employees = ["Matias", "Facundo", "Ariel", "Guillermo"];
     const puestos = {
         Matias: "WhatsApp",
-        Facundo: "Ventas mostrador",
+        Facundo: "Taller",
         Ariel: "Logística",
         Guillermo: "Cortes"
     };
