@@ -1,3 +1,5 @@
+import { API_BASE_URL } from './config.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const employeeSelector = document.getElementById('employee-selector');
     const employeeTaskList = document.getElementById('employee-task-list');
