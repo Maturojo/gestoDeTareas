@@ -1,8 +1,8 @@
-    import express from 'express';
-    import bcrypt from 'bcryptjs';
-    import jwt from 'jsonwebtoken';
-    import Usuario from '../models/Usuario.js';
-    import dotenv from 'dotenv';
+    const express = require('express');
+    const bcrypt = require('bcryptjs');
+    const jwt = require('jsonwebtoken');
+    const Usuario = require('../models/Usuario');
+    const dotenv = require('dotenv');
 
     dotenv.config();
 
@@ -26,7 +26,7 @@
 
         res.cookie('token', token, {
         httpOnly: true,
-        secure: true, // ⚠️ Usar false si estás en localhost sin HTTPS
+        secure: true, // ⚠️ Usar false si estás en localhost
         sameSite: 'strict',
         maxAge: 24 * 60 * 60 * 1000
         });
@@ -37,4 +37,4 @@
     }
     });
 
-    export default router;
+    module.exports = router;
