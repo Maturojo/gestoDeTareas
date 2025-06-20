@@ -1,6 +1,6 @@
 Por hacer
 
--Fecha en dashboard de empleados
+-Fecha en dashboard de empleados (Listo)
 -puesto al lado del nombre (listo)
 -quitar vencimiento
 -Ayudante Virtual (Nombres de archivo) (Listo)
