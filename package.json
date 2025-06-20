@@ -1,14 +1,15 @@
 {
   "name": "gestordetareas",
   "version": "1.0.0",
-  "description": "Este es un proyecto completo de **Gestor de Tareas** desarrollado como práctica profesional de desarrollo web.  \r Se trabajó en:",
+  "description": "Este es un proyecto completo de Gestor de Tareas desarrollado como práctica profesional de desarrollo web.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Maturojo/gestoDeTareas.git"
+    "url": "https://github.com/Maturojo/gestoDeTareas.git"
   },
   "keywords": [],
   "author": "",
@@ -18,9 +19,12 @@
   },
   "homepage": "https://github.com/Maturojo/gestoDeTareas#readme",
   "dependencies": {
-    "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "mongodb": "^6.17.0"
+    "mongoose": "^8.0.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }

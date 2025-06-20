@@ -1,17 +1,29 @@
-document.addEventListener('DOMContentLoaded', () => {
+import { API_BASE_URL } from './config.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const employeeOriginal = urlParams.get('empleado');
     const normalizedEmployee = normalizeString(employeeOriginal);
 
     const employeeName = document.getElementById('employee-name');
     const employeeTaskList = document.getElementById('employee-task-list');
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
     employeeName.textContent = `Tareas de ${employeeOriginal}`;
 
-    renderEmployeeTasks();
+    let tasks = await fetchTasks();
+    renderEmployeeTasks(tasks);
 
-    function renderEmployeeTasks() {
+    async function fetchTasks() {
+        try {
+            const res = await fetch(`${API_BASE_URL}/tasks`);
+            return await res.json();
+        } catch (err) {
+            console.error('Error obteniendo tareas:', err);
+            return [];
+        }
+    }
+
+    async function renderEmployeeTasks(tasks) {
         employeeTaskList.innerHTML = '';
 
         const myTasks = tasks.filter(task => normalizeString(task.owner) === normalizedEmployee);
@@ -50,19 +62,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="complete-btn">${task.completed ? 'Desmarcar' : 'Completar'}</button>
             `;
 
-            li.querySelector('.complete-btn').addEventListener('click', () => {
-                task.completed = !task.completed;
-                saveTasks();
-                renderEmployeeTasks();
+            li.querySelector('.complete-btn').addEventListener('click', async () => {
+                try {
+                    await fetch(`${API_BASE_URL}/tasks/${task._id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ completed: !task.completed })
+                    });
+                    tasks = await fetchTasks();
+                    renderEmployeeTasks(tasks);
+                } catch (error) {
+                    console.error('Error actualizando tarea:', error);
+                }
             });
 
             employeeTaskList.appendChild(li);
         });
 
-        // Mostrar observación general (editable por empleado)
-        const observaciones = JSON.parse(localStorage.getItem('observaciones')) || {};
-        const observacionText = observaciones[employeeOriginal] || '';
-
+        // 📌 Observación del empleado
         const obsSection = document.createElement('div');
         obsSection.style.marginTop = '2rem';
 
@@ -72,19 +89,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const obsTextarea = document.createElement('textarea');
         obsTextarea.classList.add('obs-textarea');
-        obsTextarea.value = observacionText;
         obsTextarea.style.width = '100%';
         obsTextarea.style.minHeight = '60px';
         obsTextarea.style.marginTop = '0.5rem';
 
-        obsTextarea.addEventListener('input', () => {
-            observaciones[employeeOriginal] = obsTextarea.value;
-            localStorage.setItem('observaciones', JSON.stringify(observaciones));
+        // Cargar observación desde API
+        try {
+            const res = await fetch(`${API_BASE_URL}/observaciones/${employeeOriginal}`);
+            const data = await res.json();
+            obsTextarea.value = data.text || '';
+        } catch (err) {
+            console.error('No se pudo cargar la observación');
+        }
+
+        // Guardar cuando el usuario escribe
+        obsTextarea.addEventListener('input', async () => {
+            try {
+                await fetch(`${API_BASE_URL}/observaciones/${employeeOriginal}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: obsTextarea.value })
+                });
+            } catch (err) {
+                console.error('No se pudo guardar la observación');
+            }
         });
 
         obsSection.appendChild(obsLabel);
         obsSection.appendChild(obsTextarea);
-
         employeeTaskList.appendChild(obsSection);
 
         document.getElementById('emp-total-tasks').textContent = myTasks.length;
@@ -94,9 +126,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function normalizeString(str) {
         return str?.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
-    }
-
-    function saveTasks() {
-        localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 });

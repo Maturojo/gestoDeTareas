@@ -1,4 +1,6 @@
-document.addEventListener('DOMContentLoaded', () => {
+import { API_BASE_URL } from './config.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
     const taskForm = document.getElementById('task-form');
     const taskTitle = document.getElementById('task-title');
     const taskDesc = document.getElementById('task-desc');
@@ -7,40 +9,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskDueDate = document.getElementById('task-dueDate');
     const employeeSections = document.getElementById('employee-sections');
 
-    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     const employees = ["Matias", "Facundo", "Ariel", "Guillermo"];
+    let tasks = await fetchTasks();
 
     renderEmployees();
     updateDashboard();
 
-    taskForm.addEventListener('submit', (e) => {
+    taskForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const newTask = {
-            id: Date.now(),
             title: taskTitle.value.trim(),
             desc: taskDesc.value.trim(),
-            owner: normalizeString(taskOwner.value),
+            owner: taskOwner.value.trim(),
             priority: parseInt(taskPriority.value),
             dueDate: taskDueDate.value,
             completed: false,
         };
 
-        tasks.push(newTask);
-        saveTasks();
+        await fetch(`${API_BASE_URL}/tasks`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newTask)
+        });
+
+        tasks = await fetchTasks();
         taskForm.reset();
         renderEmployees();
         updateDashboard();
     });
 
-    function renderEmployees() {
+    async function fetchTasks() {
+        const res = await fetch(`${API_BASE_URL}/tasks`);
+        return await res.json();
+    }
+
+    async function renderEmployees() {
         const openSections = new Set(
             Array.from(document.querySelectorAll('.employee-name.open')).map(h => h.textContent)
         );
 
         employeeSections.innerHTML = '';
 
-        employees.forEach(employee => {
+        for (const employee of employees) {
             const section = document.createElement('div');
             section.classList.add('employee-section');
 
@@ -80,16 +91,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button class="delete-btn">Eliminar</button>
                 `;
 
-                li.querySelector('.complete-btn').addEventListener('click', () => {
-                    task.completed = !task.completed;
-                    saveTasks();
+                li.querySelector('.complete-btn').addEventListener('click', async () => {
+                    await fetch(`${API_BASE_URL}/tasks/${task._id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ completed: !task.completed })
+                    });
+                    tasks = await fetchTasks();
                     renderEmployees();
                     updateDashboard();
                 });
 
-                li.querySelector('.delete-btn').addEventListener('click', () => {
-                    tasks = tasks.filter(t => t.id !== task.id);
-                    saveTasks();
+                li.querySelector('.delete-btn').addEventListener('click', async () => {
+                    await fetch(`${API_BASE_URL}/tasks/${task._id}`, {
+                        method: 'DELETE'
+                    });
+                    tasks = await fetchTasks();
                     renderEmployees();
                     updateDashboard();
                 });
@@ -97,10 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 taskList.appendChild(li);
             });
 
-            // Agregar observación por empleado al final
-            const observaciones = JSON.parse(localStorage.getItem('observaciones')) || {};
-            const observacionText = observaciones[employee] || '';
-
+            // Observación por empleado
             const obsLabel = document.createElement('label');
             obsLabel.innerHTML = '<strong>Observaciones generales:</strong>';
             obsLabel.style.display = 'block';
@@ -109,12 +123,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const obsTextarea = document.createElement('textarea');
             obsTextarea.classList.add('obs-textarea');
             obsTextarea.placeholder = 'Observación general del empleado...';
-            obsTextarea.value = observacionText;
             obsTextarea.style.marginBottom = '1rem';
 
-            obsTextarea.addEventListener('input', () => {
-                observaciones[employee] = obsTextarea.value;
-                localStorage.setItem('observaciones', JSON.stringify(observaciones));
+            try {
+                const res = await fetch(`${API_BASE_URL}/observaciones/${employee}`);
+                const data = await res.json();
+                obsTextarea.value = data.text || '';
+            } catch {
+                obsTextarea.value = '';
+            }
+
+            obsTextarea.addEventListener('input', async () => {
+                await fetch(`${API_BASE_URL}/observaciones/${employee}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: obsTextarea.value })
+                });
             });
 
             section.appendChild(header);
@@ -134,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 taskList.classList.add('open');
                 obsTextarea.classList.add('open');
             }
-        });
+        }
     }
 
     function updateDashboard() {
@@ -150,11 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('overdue-tasks').textContent = overdue;
     }
 
-    function saveTasks() {
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    }
-
     function normalizeString(str) {
-        return str?.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
+        return str?.trim().toLowerCase().normalize("NFD").replace(/\u0300-\u036f/g, '');
     }
 });

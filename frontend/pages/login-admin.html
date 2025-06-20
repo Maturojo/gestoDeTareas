@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
     <title>Login Administrador</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
@@ -17,7 +16,7 @@
             <button type="submit">Ingresar</button>
         </form>
 
-        <p id="error-msg" class="error">⚠ Contraseña incorrecta</p>
+        <p id="error-msg" class="error" style="display: none;">⚠ Contraseña incorrecta</p>
     </div>
 
     <script>
@@ -28,15 +27,20 @@
 
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
-
-                const password = passwordInput.value;
+                const password = passwordInput.value.trim();
 
                 if (password === "admin123") {
                     localStorage.setItem('admin-auth', 'true');
                     window.location.href = "admin.html";
                 } else {
                     errorMsg.style.display = 'block';
+                    passwordInput.classList.add('input-error');
                 }
+            });
+
+            passwordInput.addEventListener('input', () => {
+                errorMsg.style.display = 'none';
+                passwordInput.classList.remove('input-error');
             });
         });
     </script>

@@ -15,3 +15,11 @@ ADMINISTRADORES
 -Martin
 -Cecilia
 
+maturojo123mdq usuario
+94keTqEXNm5Oy77h contraseña de cluster0
+
+cd C:/Programacion/Sur_Maderas/gestorDeTareas/gestor-tareas-backend
+node
+
+para iniciar!
+

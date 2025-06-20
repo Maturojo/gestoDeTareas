@@ -1,7 +1,10 @@
-document.addEventListener('DOMContentLoaded', () => {
+import { API_BASE_URL } from './config.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
     const employees = ["Matias", "Facundo", "Ariel", "Guillermo"];
     const cardsContainer = document.getElementById('employee-cards');
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+    const tasks = await fetchTasks();
 
     employees.forEach(employee => {
         const myTasks = tasks.filter(task => normalizeString(task.owner) === normalizeString(employee));
@@ -23,6 +26,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         cardsContainer.appendChild(card);
     });
+
+    async function fetchTasks() {
+        try {
+            const res = await fetch(`${API_BASE_URL}/tasks`);
+            return await res.json();
+        } catch (err) {
+            console.error('Error cargando tareas:', err);
+            return [];
+        }
+    }
 
     function normalizeString(str) {
         return str?.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');

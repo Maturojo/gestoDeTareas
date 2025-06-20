@@ -3,19 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
     <title>Administrador - Gestor de Tareas</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-
-    <script>
-        // Protección de acceso
-        if (localStorage.getItem('admin-auth') !== 'true') {
-            window.location.href = "login-admin.html";
-        }
-    </script>
-
     <div class="container">
         <a href="../index.html" class="btn volver-btn">Volver al Inicio</a>
         <button id="logout-btn" class="btn volver-btn">Cerrar Sesión</button>
@@ -44,7 +35,6 @@
             </select>
 
             <input type="date" id="task-dueDate" placeholder="Fecha de vencimiento">
-
             <button type="submit">Agregar tarea</button>
         </form>
 
@@ -57,14 +47,20 @@
         <div id="employee-sections"></div>
     </div>
 
-    <script src="../js/admin.js"></script>
+    <!-- 👇 Primero importamos la config -->
+    <script type="module" src="../js/config.js"></script>
+    <!-- 👇 Luego importamos admin.js que depende de config.js -->
+    <script type="module" src="../js/admin.js" defer></script>
 
     <script>
+        if (localStorage.getItem('admin-auth') !== 'true') {
+            window.location.href = "login-admin.html";
+        }
+
         document.getElementById('logout-btn').addEventListener('click', () => {
             localStorage.removeItem('admin-auth');
             window.location.href = "login-admin.html";
         });
     </script>
-
 </body>
 </html>
