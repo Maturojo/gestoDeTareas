@@ -11,6 +11,8 @@
 </head>
 <body>
     <div class="container">
+        <div id="fecha-actual" class="fecha-derecha"></div>
+
         <a href="../index.html" class="btn volver-btn">Volver al Inicio</a>
         <button id="logout-btn" class="btn volver-btn">Cerrar Sesión</button>
 
@@ -69,5 +71,12 @@
             window.location.href = "login-admin.html";
         });
     </script>
+    <script>
+        const divFecha = document.getElementById('fecha-actual');
+        const hoy = new Date();
+        const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+        divFecha.textContent = hoy.toLocaleDateString('es-AR', opciones);
+    </script>
+
 </body>
 </html>

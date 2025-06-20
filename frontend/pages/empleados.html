@@ -9,6 +9,8 @@
 <body>
 
     <div class="empleado-container">
+        <div id="fecha-actual" class="fecha-derecha"></div>
+
         <a href="../index.html" class="btn volver-btn">Volver al Inicio</a>
         <h1 style="text-align: center; margin-top: 20px;">Empleados</h1>
 
@@ -20,6 +22,12 @@
     <script type="module" src="/js/config.js"></script>
     <!-- 👇 Luego el script principal -->
     <script type="module" src="/js/empleados-dashboard.js"></script>
+    <script>
+        const divFecha = document.getElementById('fecha-actual');
+        const hoy = new Date();
+        const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+        divFecha.textContent = hoy.toLocaleDateString('es-AR', opciones);
+    </script>
 
 </body>
 </html>

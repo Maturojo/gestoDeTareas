@@ -44,6 +44,12 @@
             });
         });
     </script>
+    <script>
+        const divFecha = document.getElementById('fecha-actual');
+        const hoy = new Date();
+        const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+        divFecha.textContent = hoy.toLocaleDateString('es-AR', opciones);
+    </script>
 
 </body>
 </html>
