@@ -9,27 +9,32 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-    origin: 'https://gestodetareas-1.onrender.com',
+    origin: 'https://gestodetareas.onrender.com', // Asegurate que coincida con tu frontend
     credentials: true
 }));
 app.use(express.json());
 app.use(cookieParser());
 
-// Servir frontend
+// Servir frontend (si lo necesitás desde el backend)
 app.use(express.static(path.join(__dirname, '../frontend')));
 app.use('/pages', express.static(path.join(__dirname, '../frontend/pages')));
 
-// Rutas API (verificá estos requires estén bien)
+// Rutas API
 app.use('/api/tasks', require('./routes/tasks'));
 app.use('/api/observaciones', require('./routes/observaciones'));
-app.use('/auth', require('./routes/auth.routes')); // asegurate que este archivo exista
+app.use('/auth', require('./routes/auth.routes')); // Este archivo debe existir
+
+// Ruta de prueba (opcional, para verificar funcionamiento)
+app.get('/ping', (req, res) => {
+    res.send('Servidor activo ✅');
+});
 
 // Fallback 404
 app.get('*', (req, res) => {
     res.status(404).send('Página no encontrada');
 });
 
-// DB + inicio
+// Conexión a la base de datos y arranque del servidor
 mongoose.connect(MONGO_URI)
     .then(() => {
         console.log('✅ Conectado a MongoDB');
