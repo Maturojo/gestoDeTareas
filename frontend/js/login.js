@@ -25,7 +25,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
         }
 
         if (res.ok && data.success) {
-            window.location.href = 'empleado.html'; // ✅ redirigí donde quieras
+            window.location.href = '/pages/empleado.html'; // ✅ redirigí donde quieras
         } else {
             document.getElementById('login-error').style.display = 'block';
         }
