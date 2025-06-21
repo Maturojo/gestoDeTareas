@@ -1,5 +1,5 @@
-    // 📁 backend/models/Usuario.js
-    import mongoose from 'mongoose';
+    // 📁 gestor-tareas-backend/models/Usuario.js
+    const mongoose = require('mongoose');
 
     const UsuarioSchema = new mongoose.Schema({
     nombre: { type: String, required: true },
@@ -8,4 +8,4 @@
     puesto: { type: String, required: true }
     });
 
-    export default mongoose.model('Usuario', UsuarioSchema);
+    module.exports = mongoose.model('Usuario', UsuarioSchema);
