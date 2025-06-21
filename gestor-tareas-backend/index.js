@@ -9,14 +9,17 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-    origin: 'https://gestodetareas-1.onrender.com', // Cambiar si tu frontend tiene otra URL
+    origin: 'https://gestodetareas-1.onrender.com', // ⚠️ Asegurate que esta URL sea la de tu frontend
     credentials: true
 }));
 app.use(express.json());
 app.use(cookieParser());
 
-// 👉 Servir archivos estáticos desde frontend
+// ✅ Servir carpeta principal del frontend (por si tenés assets ahí)
 app.use(express.static(path.join(__dirname, '../frontend')));
+
+// ✅ Servir /pages explícitamente
+app.use('/pages', express.static(path.join(__dirname, '../frontend/pages')));
 
 // Conexión a MongoDB
 mongoose.connect(MONGO_URI)
@@ -28,14 +31,9 @@ app.use('/api/tasks', require('./routes/tasks'));
 app.use('/api/observaciones', require('./routes/observaciones'));
 app.use('/auth', require('./routes/auth.routes'));
 
-// ✅ Fallback SOLO si la ruta no es API ni /auth
-const loginPath = path.join(__dirname, '../frontend/pages/login.html');
-app.use((req, res, next) => {
-    if (req.method === 'GET' && !req.path.startsWith('/api') && !req.path.startsWith('/auth')) {
-        res.sendFile(loginPath);
-    } else {
-        next();
-    }
+// Ruta fallback 404
+app.get('*', (req, res) => {
+    res.status(404).send('Página no encontrada');
 });
 
 // Inicio del servidor
