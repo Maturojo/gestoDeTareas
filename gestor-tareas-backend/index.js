@@ -9,7 +9,7 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-    origin: 'https://gestodetareas-1.onrender.com', // Cambiar si tu frontend tiene otra URL
+    origin: 'https://gestodetareas-1.onrender.com', // Cambialo si tu frontend tiene otra URL
     credentials: true
 }));
 app.use(express.json());
@@ -30,7 +30,7 @@ app.use('/auth', require('./routes/auth.routes'));
 
 // Ruta fallback: sirve login.html si no encuentra otra
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/pages/login.html'));
+    res.sendFile(path.resolve(__dirname, '../frontend/pages/login.html'));
 });
 
 // Inicio del servidor
