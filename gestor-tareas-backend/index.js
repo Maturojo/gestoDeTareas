@@ -1,3 +1,4 @@
+// 📁 gestor-tareas-backend/index.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -16,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // 👉 Servir archivos estáticos desde la carpeta frontend
-app.use(express.static(path.join(__dirname, '../frontend')));
+app.use(express.static(path.resolve(__dirname, '../frontend')));
 
 // Conexión a MongoDB
 mongoose.connect(MONGO_URI)
@@ -28,9 +29,9 @@ app.use('/api/tasks', require('./routes/tasks'));
 app.use('/api/observaciones', require('./routes/observaciones'));
 app.use('/auth', require('./routes/auth.routes'));
 
-// Ruta fallback: sirve login.html si no encuentra ninguna otra
+// Ruta fallback: sirve login.html si no encuentra otra
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/pages/login.html'));
+    res.sendFile(path.resolve(__dirname, '../frontend/pages/login.html'));
 });
 
 // Inicio del servidor
