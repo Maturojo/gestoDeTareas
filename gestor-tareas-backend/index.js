@@ -3,33 +3,37 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
 const { MONGO_URI, PORT } = require('./config');
 
 const app = express();
 
 // Middlewares
 app.use(cors({
-    origin: 'https://gestodetareas.onrender.com', // Asegurate que coincida con tu frontend
+    origin: 'https://gestodetareas.onrender.com', // Cambiar si usás otro dominio
     credentials: true
 }));
 app.use(express.json());
 app.use(cookieParser());
 
-// Servir frontend (si lo necesitás desde el backend)
+// Servir el frontend
 app.use(express.static(path.join(__dirname, '../frontend')));
 app.use('/pages', express.static(path.join(__dirname, '../frontend/pages')));
 
 // Rutas API
 app.use('/api/tasks', require('./routes/tasks'));
 app.use('/api/observaciones', require('./routes/observaciones'));
-app.use('/auth', require('./routes/auth.routes')); // Este archivo debe existir
+app.use('/auth', require('./routes/auth.routes')); // Asegurate de que el archivo exista y exporte router
 
-// Ruta de prueba (opcional, para verificar funcionamiento)
+// Ruta de prueba para Render
 app.get('/ping', (req, res) => {
-    res.send('Servidor activo ✅');
+    res.send('pong');
 });
 
-// Fallback 404
+// Fallback para rutas no encontradas
 app.get('*', (req, res) => {
     res.status(404).send('Página no encontrada');
 });
@@ -38,8 +42,8 @@ app.get('*', (req, res) => {
 mongoose.connect(MONGO_URI)
     .then(() => {
         console.log('✅ Conectado a MongoDB');
-        app.listen(PORT, () => {
-            console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+        app.listen(PORT || 5000, () => {
+            console.log(`🚀 Servidor corriendo en puerto ${PORT || 5000}`);
         });
     })
     .catch(err => console.error('❌ Error conectando a MongoDB:', err));
