@@ -1,30 +1,16 @@
 {
-  "name": "gestordetareas",
+  "name": "gestor-tareas-backend",
   "version": "1.0.0",
-  "description": "Este es un proyecto completo de Gestor de Tareas desarrollado como práctica profesional de desarrollo web.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Maturojo/gestoDeTareas.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Maturojo/gestoDeTareas/issues"
-  },
-  "homepage": "https://github.com/Maturojo/gestoDeTareas#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "mongoose": "^8.0.0",
-    "dotenv": "^16.4.5"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.0"
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.6.0"
   }
 }
