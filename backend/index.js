@@ -18,15 +18,14 @@ mongoose.connect(MONGO_URI)
 // Rutas API
 app.use('/api/tasks', require('./routes/tasks'));
 app.use('/api/observaciones', require('./routes/observaciones'));
-app.use('/api/auth', require('./routes/auth')); // <-- Ruta de login/registro de usuarios
-// Si luego agregás usuarios:
-// app.use('/api/usuarios', require('./routes/usuarios'));
+app.use('/api/auth', require('./routes/auth'));
 
 // Servir archivos estáticos del frontend
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// Fallback para rutas del frontend (Single Page App)
-app.get('*', (req, res) => {
+// Fallback solo para rutas sin extensión (SPA)
+app.get('*', (req, res, next) => {
+    if (req.path.includes('.') || req.path.startsWith('/api/')) return next(); // si es archivo o ruta API, continuar
     res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 

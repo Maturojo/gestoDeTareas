@@ -1,6 +1,38 @@
 import { API_BASE_URL } from './config.js';
 
+const token = localStorage.getItem('token');
+
+    const validarToken = async () => {
+    try {
+        const res = await fetch(`${API_BASE_URL}/auth/validate`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+        });
+
+        if (!res.ok) throw new Error();
+    } catch (err) {
+        localStorage.removeItem('token');
+        window.location.href = 'login-admin.html';
+    }
+    };
+
+    await validarToken();
+
+
 document.addEventListener('DOMContentLoaded', async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert("No estás autenticado.");
+        window.location.href = '/login.html';
+        return;
+    }
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    };
+
     const taskForm = document.getElementById('task-form');
     const taskTitle = document.getElementById('task-title');
     const taskDesc = document.getElementById('task-desc');
@@ -34,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         await fetch(`${API_BASE_URL}/tasks`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers,
             body: JSON.stringify(newTask)
         });
 
@@ -42,12 +74,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         taskForm.reset();
         renderEmployees();
         updateDashboard();
-
         showToast("Tarea agregada ✅");
     });
 
     async function fetchTasks() {
-        const res = await fetch(`${API_BASE_URL}/tasks`);
+        const res = await fetch(`${API_BASE_URL}/tasks`, { headers });
         return await res.json();
     }
 
@@ -102,7 +133,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 li.querySelector('.complete-btn').addEventListener('click', async () => {
                     await fetch(`${API_BASE_URL}/tasks/${task._id}`, {
                         method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers,
                         body: JSON.stringify({ completed: !task.completed })
                     });
                     tasks = await fetchTasks();
@@ -113,7 +144,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 li.querySelector('.delete-btn').addEventListener('click', async () => {
                     await fetch(`${API_BASE_URL}/tasks/${task._id}`, {
-                        method: 'DELETE'
+                        method: 'DELETE',
+                        headers
                     });
                     tasks = await fetchTasks();
                     renderEmployees();
@@ -134,21 +166,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             obsTextarea.placeholder = 'Observación general del empleado...';
             obsTextarea.style.marginBottom = '1rem';
 
-            try {
-                const res = await fetch(`${API_BASE_URL}/observaciones/${employee}`);
-                const data = await res.json();
-                obsTextarea.value = data.text || '';
-            } catch {
-                obsTextarea.value = '';
-            }
+            if (employee) {
+                try {
+                    const res = await fetch(`${API_BASE_URL}/observaciones/${employee}`, { headers });
+                    const data = await res.json();
+                    obsTextarea.value = data.text || '';
+                } catch {
+                    obsTextarea.value = '';
+                }
 
-            obsTextarea.addEventListener('input', async () => {
-                await fetch(`${API_BASE_URL}/observaciones/${employee}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ text: obsTextarea.value })
+                obsTextarea.addEventListener('input', async () => {
+                    await fetch(`${API_BASE_URL}/observaciones/${employee}`, {
+                        method: 'POST',
+                        headers,
+                        body: JSON.stringify({ text: obsTextarea.value })
+                    });
                 });
-            });
+            }
 
             section.appendChild(header);
             section.appendChild(taskList);
@@ -184,7 +218,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function normalizeString(str) {
-        return str?.trim().toLowerCase().normalize("NFD").replace(/\u0300-\u036f/g, '');
+        return str?.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
     }
 
     function showToast(message) {

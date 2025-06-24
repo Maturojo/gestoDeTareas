@@ -40,3 +40,11 @@
     });
 
     module.exports = router;
+
+        // En routes/auth.js (al final)
+    const verificarToken = require('../middleware/verificarToken');
+
+    router.get('/validate', verificarToken, (req, res) => {
+    res.json({ ok: true });
+    });
+
