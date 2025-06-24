@@ -22,5 +22,41 @@
         window.location.href = 'empleados.html';
         });
     </script>
+    <script type="module">
+import { API_BASE_URL } from './config.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const taskList = document.getElementById('task-list');
+
+    try {
+        const res = await fetch(`${API_BASE_URL}/tasks`);
+        const tasks = await res.json();
+
+        const tareasMatias = tasks.filter(task => task.owner?.trim().toLowerCase() === 'matias');
+
+        if (tareasMatias.length === 0) {
+            taskList.innerHTML = '<p>No hay tareas asignadas.</p>';
+            return;
+        }
+
+        tareasMatias.forEach(task => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <h3>${task.title}</h3>
+                <p>${task.desc || ''}</p>
+                <p><strong>Prioridad:</strong> ${task.priority}</p>
+                <p><strong>Vence:</strong> ${task.dueDate || 'Sin fecha'}</p>
+                <p><strong>Estado:</strong> ${task.completed ? 'Completada' : 'Pendiente'}</p>
+            `;
+            li.classList.add(task.completed ? 'completed' : 'pending');
+            taskList.appendChild(li);
+        });
+    } catch (err) {
+        taskList.innerHTML = '<p>Error al cargar tareas</p>';
+        console.error(err);
+    }
+});
+</script>
+
     </body>
     </html>
