@@ -67,12 +67,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 showToast(task.completed ? "Tarea desmarcada 🔁" : "Tarea completada ✅");
             });
 
-            li.querySelector('.delete-btn').addEventListener('click', async () => {
-                await fetch(`${API_BASE_URL}/tasks/${task._id}`, { method: 'DELETE' });
-                tasks = await fetchTasks();
-                renderTasks(tasks);
-                showToast("Tarea eliminada ❌");
-            });
+            
 
             taskList.appendChild(li);
         });
