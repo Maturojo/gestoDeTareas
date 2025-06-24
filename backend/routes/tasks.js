@@ -1,53 +1,38 @@
-// 📁 backend/routes/tasks.js
-const express = require('express');
-const router = express.Router();
-const Task = require('../models/Task');
+    const express = require('express');
+    const router = express.Router();
+    const Task = require('../models/Task');
 
-// Obtener todas las tareas
-router.get('/', async (req, res) => {
-    try {
-        const tasks = await Task.find();
-        res.json(tasks);
-    } catch (err) {
-        res.status(500).json({ error: 'Error al obtener tareas' });
-    }
-});
+    // GET: obtener todas las tareas
+    router.get('/', async (req, res) => {
+    const tasks = await Task.find();
+    res.json(tasks);
+    });
 
-// Crear tarea
-router.post('/', async (req, res) => {
-    const { title, desc, owner, priority, dueDate, completed } = req.body;
+    // POST: crear nueva tarea
+    router.post('/', async (req, res) => {
+    const newTask = new Task(req.body);
+    const saved = await newTask.save();
+    res.status(201).json(saved);
+    });
 
-    try {
-        const newTask = new Task({ title, desc, owner, priority, dueDate, completed });
-        await newTask.save();
-        res.status(201).json(newTask);
-    } catch (err) {
-        res.status(400).json({ error: 'Error al crear tarea' });
-    }
-});
+    module.exports = router;
 
-// Actualizar tarea
+    // PUT: actualizar tarea (ej. marcar como completada)
 router.put('/:id', async (req, res) => {
     try {
-        const updatedTask = await Task.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true }
-        );
+        const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.json(updatedTask);
     } catch (err) {
-        res.status(400).json({ error: 'Error al actualizar tarea' });
+        res.status(500).json({ error: 'Error al actualizar la tarea' });
     }
 });
 
-// Eliminar tarea
+// DELETE: eliminar tarea
 router.delete('/:id', async (req, res) => {
     try {
         await Task.findByIdAndDelete(req.params.id);
-        res.status(204).end();
+        res.json({ message: 'Tarea eliminada correctamente' });
     } catch (err) {
-        res.status(400).json({ error: 'Error al eliminar tarea' });
+        res.status(500).json({ error: 'Error al eliminar la tarea' });
     }
 });
-
-module.exports = router;
