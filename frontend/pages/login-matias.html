@@ -1,0 +1,32 @@
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+    <meta charset="UTF-8" />
+    <title>Login Matías</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    </head>
+    <body>
+    <div class="login-container">
+        <h1>Acceso Matías</h1>
+        <form id="login-form">
+        <input type="password" id="clave" placeholder="Clave de acceso" required />
+        <button type="submit">Entrar</button>
+        </form>
+        <p id="error-msg" class="error" style="display: none;">⚠ Clave incorrecta</p>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const clave = document.getElementById('clave').value.trim();
+
+        if (clave === 'matias123') {
+            localStorage.setItem('auth-matias', 'true');
+            window.location.href = 'matias.html';
+        } else {
+            document.getElementById('error-msg').style.display = 'block';
+        }
+        });
+    </script>
+    </body>
+    </html>

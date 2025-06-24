@@ -29,9 +29,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             <p>Completadas: ${completed}</p>
         `;
 
-        card.addEventListener('click', () => {
-            window.location.href = `empleado-tareas.html?empleado=${encodeURIComponent(employee)}`;
-        });
+        // 🔐 Si es Matías, va al login
+        if (employee === "Matias") {
+            card.addEventListener('click', () => {
+                window.location.href = `/login/login-matias.html`;
+            });
+        } else {
+            // Los otros siguen igual (o podemos bloquear si querés)
+            card.addEventListener('click', () => {
+                window.location.href = `empleado-tareas.html?empleado=${encodeURIComponent(employee)}`;
+            });
+        }
 
         cardsContainer.appendChild(card);
     });

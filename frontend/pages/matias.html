@@ -1,0 +1,26 @@
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+    <meta charset="UTF-8" />
+    <title>Panel de Matías</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    </head>
+    <body>
+    <div class="container">
+        <h1>Bienvenido, Matías</h1>
+        <button id="logout-btn">Cerrar sesión</button>
+        <p>Aquí irían tus tareas, observaciones, etc.</p>
+    </div>
+
+    <script>
+        if (localStorage.getItem('auth-matias') !== 'true') {
+        window.location.href = 'login-matias.html';
+        }
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+        localStorage.removeItem('auth-matias');
+        window.location.href = 'login-matias.html';
+        });
+    </script>
+    </body>
+    </html>
