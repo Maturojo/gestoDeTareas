@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // 🔐 Si es Matías, va al login
         if (employee === "Matias") {
             card.addEventListener('click', () => {
-                window.location.href = `/login/login-matias.html`;
+                window.location.href = `/pages/login-matias.html`;
             });
         } else {
             // Los otros siguen igual (o podemos bloquear si querés)
