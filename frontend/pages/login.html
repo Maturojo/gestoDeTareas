@@ -2,23 +2,31 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Login - Gestor de Tareas</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css"> <!-- Ajustá el path si tu CSS está en otro lugar -->
+    <title>Login</title>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-    <main class="login-container">
+    <div class="login-container">
         <h1>Ingresar</h1>
-
         <form id="login-form">
-            <input type="text" id="usuario" placeholder="Usuario" required />
             <input type="password" id="password" placeholder="Contraseña" required />
-            <button type="submit">Ingresar</button>
+            <button type="submit">Entrar</button>
         </form>
+        <p id="error-msg" style="display:none; color:red;">Contraseña incorrecta</p>
+    </div>
 
-        <p id="login-error" style="color: red; display: none;">Usuario o contraseña incorrectos</p>
-    </main>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const pass = document.getElementById('password').value.trim();
 
-    <script type="module" src="../js/login.js"></script>
+            if (pass === "admin123") {
+                localStorage.setItem("auth", "true");
+                window.location.href = "admin.html";
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>

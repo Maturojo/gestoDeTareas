@@ -1,10 +1,10 @@
+// 📁 backend/routes/tasks.js
 const express = require('express');
 const router = express.Router();
 const Task = require('../models/Task');
-const verificarToken = require('../middleware/verificarToken');
 
 // Obtener todas las tareas
-router.get('/', verificarToken, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const tasks = await Task.find();
         res.json(tasks);
@@ -13,12 +13,12 @@ router.get('/', verificarToken, async (req, res) => {
     }
 });
 
-// Crear una tarea
-router.post('/', verificarToken, async (req, res) => {
-    const { title, completed } = req.body;
+// Crear tarea
+router.post('/', async (req, res) => {
+    const { title, desc, owner, priority, dueDate, completed } = req.body;
 
     try {
-        const newTask = new Task({ title, completed });
+        const newTask = new Task({ title, desc, owner, priority, dueDate, completed });
         await newTask.save();
         res.status(201).json(newTask);
     } catch (err) {
@@ -26,14 +26,12 @@ router.post('/', verificarToken, async (req, res) => {
     }
 });
 
-// Actualizar una tarea
-router.put('/:id', verificarToken, async (req, res) => {
-    const { title, completed } = req.body;
-
+// Actualizar tarea
+router.put('/:id', async (req, res) => {
     try {
         const updatedTask = await Task.findByIdAndUpdate(
             req.params.id,
-            { title, completed },
+            req.body,
             { new: true }
         );
         res.json(updatedTask);
@@ -42,8 +40,8 @@ router.put('/:id', verificarToken, async (req, res) => {
     }
 });
 
-// Eliminar una tarea
-router.delete('/:id', verificarToken, async (req, res) => {
+// Eliminar tarea
+router.delete('/:id', async (req, res) => {
     try {
         await Task.findByIdAndDelete(req.params.id);
         res.status(204).end();
