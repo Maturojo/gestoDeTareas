@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <p><strong>Prioridad:</strong> ${task.priority}</p>
                 <p><strong>Vence:</strong> ${task.dueDate || 'Sin fecha'}</p>
                 <button class="complete-btn">${task.completed ? 'Desmarcar' : 'Completar'}</button>
-                <button class="delete-btn">Eliminar</button>
+                
             `;
 
             li.querySelector('.complete-btn').addEventListener('click', async () => {
