@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Asistente Virtual</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body>
     <div class="container">
@@ -12,10 +14,20 @@
 
         <h1 style="text-align: center;">Asistente Virtual - Sur Maderas</h1>
 
-        <div class="menu-buttons">
+        <!-- <div class="menu-buttons">
             <a href="/pages/login-admin.html" class="btn admin-btn">Administrador</a>
             <a href="pages/empleados.html" class="btn empleado-btn">Empleados</a>
-        </div>
+        </div> -->
+
+        <div class="menu-buttons">
+        <a href="/pages/login-admin.html" class="btn admin-btn" title="Administrador">
+            <i class="fas fa-user-shield"></i>
+        </a>
+        <a href="pages/empleados.html" class="btn empleado-btn" title="Empleados">
+            <i class="fas fa-users"></i>
+        </a>
+</div>
+
     </div>
     <script>
         const divFecha = document.getElementById('fecha-actual');
